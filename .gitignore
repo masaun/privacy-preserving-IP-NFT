@@ -10,6 +10,8 @@ circuits/Prover.toml
 circuits/Verifier.toml
 plonk_vk.sol
 
+lib/foundry-noir-helper/*
+
 .DS_Store
 
 node_modules
