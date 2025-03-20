@@ -3,12 +3,12 @@ out
 proofs
 broadcast
 .env
-plonk_vk.sol
+#plonk_vk.sol
 circuits/target/*
 
 circuits/Prover.toml
 circuits/Verifier.toml
-plonk_vk.sol
+circuits/test_verifyProof.toml
 
 lib/foundry-noir-helper/*
 
