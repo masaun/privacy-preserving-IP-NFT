@@ -1,7 +1,8 @@
 pragma solidity ^0.8.17;
 
-import "../contracts/Starter.sol";
-import "../circuits/target/contract.sol";
+import { Starter } from "../contracts/Starter.sol";
+import { UltraVerifier } from "../contracts/circuit/plonk_vk.sol";
+//import "../circuits/target/contract.sol";
 import "forge-std/console.sol";
 
 import "forge-std/Test.sol";
