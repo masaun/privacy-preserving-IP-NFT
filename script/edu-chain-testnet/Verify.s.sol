@@ -12,13 +12,23 @@ contract VerifyScript is Script {
     function setUp() public {}
 
     function run() public returns (bool) {
-        verifier = new UltraVerifier();
-        starter = new Starter(verifier);
+        uint256 deployerPrivateKey = vm.envUint("EDU_CHAIN_TESTNET_PRIVATE_KEY");
+        vm.startBroadcast(deployerPrivateKey);
+
+        /// @dev - Read the each deployed address from the configuration file.
+        address ULTRAVERIFER_ON_EDU_CHAIN_TESTNET = vm.envAddress("ULTRAVERIFER_ON_EDU_CHAIN_TESTNET");
+        address STARTER_ON_EDU_CHAIN_TESTNET = vm.envAddress("STARTER_ON_EDU_CHAIN_TESTNET");
+
+        /// @dev - Create the SC instances /w deployed SC addresses
+        verifier = UltraVerifier(ULTRAVERIFER_ON_EDU_CHAIN_TESTNET);
+        starter = Starter(STARTER_ON_EDU_CHAIN_TESTNET);
+        // verifier = new UltraVerifier();
+        // starter = new Starter(verifier);
 
         bytes memory proof_w_inputs = vm.readFileBinary("./circuits/target/with_foundry_proof.bin");
         bytes memory proofBytes = sliceAfter64Bytes(proof_w_inputs);
-        // string memory proof = vm.readLine("./circuits/target/with_foundry_proof.bin");
-        // bytes memory proofBytes = vm.parseBytes(proof);
+        //string memory proof = vm.readLine("./circuits/target/with_foundry_proof.bin");
+        //bytes memory proofBytes = vm.parseBytes(proof);
 
         bytes32[] memory correct = new bytes32[](2);
         correct[0] = bytes32(0x0000000000000000000000000000000000000000000000000000000000000003);
