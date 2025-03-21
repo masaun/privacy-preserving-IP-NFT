@@ -1,3 +1,35 @@
+# Climate Change ZK Certificate (i.e. GHG certificate) /or IP-NFT /w ZK certificate-attached metadata in Noir
+
+## Overview
+
+- Climate Change ZK Certificate (i.e. GHG certificate)
+  
+Or,
+
+- IP-NFT /w ZK certificate-attached metadata
+
+<br>
+
+## Installation
+
+<br>
+
+## Script
+- Run the `Verify.s.sol` on the Local Network
+```bash
+sh ./script/runningScript_Verify.sh
+```
+
+- Run the `Verify.s.sol` on the EDU Chain Testnet
+```bash
+sh ./script/edu-chain-testnet/runningScript_Verify_onEDUChainTestnet.sh
+```
+
+
+<br>
+
+<hr>
+
 # Noir with Foundry
 
 This example uses Foundry to deploy and test a verifier.

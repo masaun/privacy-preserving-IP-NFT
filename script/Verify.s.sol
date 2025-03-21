@@ -4,6 +4,7 @@ import "forge-std/Script.sol";
 import { Starter } from "../../contracts/Starter.sol";
 import { UltraVerifier } from "../../contracts/circuit/plonk_vk.sol";
 //import { UltraVerifier } from "../../circuits/target/contract.sol";
+import { ProofConverter } from "./utils/ProofConverter.sol";
 
 contract VerifyScript is Script {
     Starter public starter;
@@ -16,7 +17,8 @@ contract VerifyScript is Script {
         starter = new Starter(verifier);
 
         bytes memory proof_w_inputs = vm.readFileBinary("./circuits/target/with_foundry_proof.bin");
-        bytes memory proofBytes = sliceAfter64Bytes(proof_w_inputs);
+        bytes memory proofBytes = ProofConverter.sliceAfter64Bytes(proof_w_inputs);
+        // bytes memory proofBytes = sliceAfter64Bytes(proof_w_inputs);
         // string memory proof = vm.readLine("./circuits/target/with_foundry_proof.bin");
         // bytes memory proofBytes = vm.parseBytes(proof);
 
