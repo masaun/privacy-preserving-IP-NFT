@@ -9,7 +9,7 @@ fn main(
     root: pub Field, // @dev - Merkle Root
     hash_path: [Field; 2],
     index: Field,
-    secret: Field,   // @dev - a one time secret code that was distributed to each customer (before the proof generation get started)
+    secret: Field,   // @dev - A hidden metadata hash (private)
     ip_nft_data: IPNftData
 ) -> pub Field {
     let note_commitment = std::hash::pedersen_hash([secret]);
