@@ -10,30 +10,23 @@ mod tests {
         let hash_path: [Field; 2] = [0x1efa9d6bb4dfdf86063cc77efdec90eb9262079230f1898049efad264835b6c8, 0x2a653551d87767c545a2a11b29f0581a392b4e177a87c8e3eb425c51a26a8c77];
         let index: Field = 0;
         let secret: Field = 1;
-        let nft_owner: Field = 0x2a653551d87767c545a2a11b29f0581a392b4e177a87c8e3eb425c51a26a8c77;
-        let metadata_cid_hash: Field = 0x1efa9d6bb4dfdf86063cc77efdec90eb9262079230f1898049efad264835b6c8;
 
-        // let mortgageLoanAssessmentData: MortgageLoanAssessmentData = MortgageLoanAssessmentData {
-        //     fico_credit_score_proof: 0x2a653551d87767c545a2a11b29f0581a392b4e177a87c8e3eb425c51a26a8c77,
-        //     fico_credit_score_proof_hash: 0x1efa9d6bb4dfdf86063cc77efdec90eb9262079230f1898049efad264835b6c8,
-        //     employment_verification_letter_proof: 0x2a653551d87767c545a2a11b29f0581a392b4e177a87c8e3eb425c51a26a8c77,
-        //     employment_verification_letter_proof_hash: 0x1efa9d6bb4dfdf86063cc77efdec90eb9262079230f1898049efad264835b6c8,
-        //     credit_score: 800,
-        //     income: 55000
-        // };
+        let ip_nft_data: IPNftData = IPNftData {
+            nft_owner: 0xC6093Fd9cc143F9f058938868b2df2daF9A91d28,
+            nft_token_id: 1,
+            metadata_cid_hash: 0x1efa9d6bb4dfdf86063cc77efdec90eb9262079230f1898049efad264835b6c8
+        };
 
         let nullifier = main(
             root,
             hash_path,
             index,
             secret,
-            nft_owner,
-            metadata_cid_hash
-            //mortgageLoanAssessmentData,
+            ip_nft_data
         );
 
         let note_commitment = std::hash::pedersen_hash([secret]);
-        let _nullifier = std::hash::pedersen_hash([root, secret, nft_owner, metadata_cid_hash]);
+        let _nullifier = std::hash::pedersen_hash([root, secret, ip_nft_data.nft_owner, ip_nft_data.nft_token_id, ip_nft_data.metadata_cid_hash]);
 
         // Constraint check
         assert(nullifier == _nullifier, "Invalid nullifier");
