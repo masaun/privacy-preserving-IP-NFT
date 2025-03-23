@@ -1,20 +1,20 @@
 pragma solidity ^0.8.17;
 
-import "forge-std/Script.sol";
-import { Starter } from "../../contracts/Starter.sol";
+import { Script } from "forge-std/Script.sol";
+import { IPNFTOwnershipVerifier } from "../contracts/circuit/IPNFTOwnershipVerifier.sol";
 import { UltraVerifier } from "../../contracts/circuit/plonk_vk.sol";
 //import { UltraVerifier } from "../../circuits/target/contract.sol";
 import { ProofConverter } from "./utils/ProofConverter.sol";
 
 contract VerifyScript is Script {
-    Starter public starter;
+    IPNFTOwnershipVerifier public ipNFTOwnershipVerifier;
     UltraVerifier public verifier;
 
     function setUp() public {}
 
     function run() public returns (bool) {
         verifier = new UltraVerifier();
-        starter = new Starter(verifier);
+        ipNFTOwnershipVerifier = new IPNFTOwnershipVerifier(verifier);
 
         bytes memory proof_w_inputs = vm.readFileBinary("./circuits/target/ip_nft_ownership_proof.bin");
         bytes memory proofBytes = ProofConverter.sliceAfter64Bytes(proof_w_inputs);
@@ -26,7 +26,7 @@ contract VerifyScript is Script {
         correct[0] = bytes32(0x0000000000000000000000000000000000000000000000000000000000000003);
         correct[1] = correct[0];
 
-        bool equal = starter.verifyIPNFTOwnership(proofBytes, correct);
+        bool equal = ipNFTOwnershipVerifier.verifyIPNFTOwnership(proofBytes, correct);
         return equal;
     }
 
