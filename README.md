@@ -14,7 +14,17 @@ Or,
 
 <br>
 
-## Script
+## ZK circuit - Test
+
+```bash
+cd circuits
+sh circuit_test.sh
+```
+
+
+<br>
+
+## SC - Script
 - Run the `Verify.s.sol` on the Local Network
 ```bash
 sh ./script/runningScript_Verify.sh
