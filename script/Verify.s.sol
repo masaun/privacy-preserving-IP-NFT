@@ -16,10 +16,10 @@ contract VerifyScript is Script {
         verifier = new UltraVerifier();
         starter = new Starter(verifier);
 
-        bytes memory proof_w_inputs = vm.readFileBinary("./circuits/target/with_foundry_proof.bin");
+        bytes memory proof_w_inputs = vm.readFileBinary("./circuits/target/ip_nft_ownership_proof.bin");
         bytes memory proofBytes = ProofConverter.sliceAfter64Bytes(proof_w_inputs);
         // bytes memory proofBytes = sliceAfter64Bytes(proof_w_inputs);
-        // string memory proof = vm.readLine("./circuits/target/with_foundry_proof.bin");
+        // string memory proof = vm.readLine("./circuits/target/ip_nft_ownership_proof.bin");
         // bytes memory proofBytes = vm.parseBytes(proof);
 
         bytes32[] memory correct = new bytes32[](2);

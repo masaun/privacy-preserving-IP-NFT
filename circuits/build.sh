@@ -12,19 +12,19 @@ echo "Generate witness..."
 nargo execute
 
 echo "Proving and generating a ZK Proof..."
-bb prove -b ./target/with_foundry.json -w ./target/with_foundry.gz -o ./target/with_foundry_proof.bin
+bb prove -b ./target/ip_nft_ownership.json -w ./target/ip_nft_ownership.gz -o ./target/ip_nft_ownership_proof.bin
 
 echo "Generating vkey..."
-bb write_vk -b ./target/with_foundry.json -o ./target/with_foundry_vk.bin
+bb write_vk -b ./target/ip_nft_ownership.json -o ./target/ip_nft_ownership_vk.bin
 
 echo "Link vkey to the zkProof"
-bb verify -k ./target/with_foundry_vk.bin -p ./target/with_foundry_proof.bin
+bb verify -k ./target/ip_nft_ownership_vk.bin -p ./target/ip_nft_ownership_proof.bin
 
 echo "Check a zkProof"
-head -c 32 ./target/with_foundry_proof.bin | od -An -v -t x1 | tr -d $' \n'
+head -c 32 ./target/ip_nft_ownership_proof.bin | od -An -v -t x1 | tr -d $' \n'
 
 echo "Copy and paste vk for generating a Solidity Verifier contract"
-cp ./target/with_foundry_vk.bin ./target/vk
+cp ./target/ip_nft_ownership_vk.bin ./target/vk
 
 echo "Generate a Solidity Verifier contract"
 bb contract
