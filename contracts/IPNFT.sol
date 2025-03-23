@@ -23,8 +23,8 @@ contract IPNFT is ERC721URIStorage {
         nextTokenId++;
     }
 
-    function verifyIPNFTOwnership(uint256 tokenId, bytes memory proof) public view returns (bool) {
+    function verifyIPNFTOwnership(bytes calldata proof, bytes32[] calldata publicInputs, uint256 tokenId) public view returns (bool) {
         require(ownerOf(tokenId) != address(0), "This IPNFT does not exist");
-        return ipNFTOwnershipVerifier.verifyProof(proof, [uint256(uint160(ownerOf(tokenId))), uint256(secrets[tokenId])]);
+        return ipNFTOwnershipVerifier.verifyIPNFTOwnership(proof, publicInputs);
     }
 }

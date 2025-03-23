@@ -1,13 +1,13 @@
 pragma solidity ^0.8.17;
 
-import "forge-std/Script.sol";
-import { Starter } from "../../contracts/Starter.sol";
+import { Script } from "forge-std/Script.sol";
+import { IPNFTOwnershipVerifier } from "../../contracts/circuit/IPNFTOwnershipVerifier.sol";
 import { UltraVerifier } from "../../contracts/circuit/plonk_vk.sol";
 //import { UltraVerifier } from "../../circuits/target/contract.sol";
 import { ProofConverter } from "../utils/ProofConverter.sol";
 
 contract VerifyScript is Script {
-    Starter public starter;
+    IPNFTOwnershipVerifier public ipNFTOwnershipVerifier;
     UltraVerifier public verifier;
 
     function setUp() public {}
@@ -17,14 +17,14 @@ contract VerifyScript is Script {
         vm.startBroadcast(deployerPrivateKey);
 
         /// @dev - Read the each deployed address from the configuration file.
-        address ULTRAVERIFER_ON_EDU_CHAIN_TESTNET = vm.envAddress("ULTRAVERIFER_ON_EDU_CHAIN_TESTNET");
-        address STARTER_ON_EDU_CHAIN_TESTNET = vm.envAddress("STARTER_ON_EDU_CHAIN_TESTNET");
+        address ULTRAVERIFER = vm.envAddress("ULTRAVERIFER_ON_EDU_CHAIN_TESTNET");
+        address IPNFT_OWNERSHIP_VERIFIER = vm.envAddress("IPNFT_OWNERSHIP_VERIFIER_ON_EDU_CHAIN_TESTNET");
 
         /// @dev - Create the SC instances /w deployed SC addresses
-        verifier = UltraVerifier(ULTRAVERIFER_ON_EDU_CHAIN_TESTNET);
-        starter = Starter(STARTER_ON_EDU_CHAIN_TESTNET);
+        verifier = UltraVerifier(ULTRAVERIFER);
+        ipNFTOwnershipVerifier = IPNFTOwnershipVerifier(IPNFT_OWNERSHIP_VERIFIER);
         // verifier = new UltraVerifier();
-        // starter = new Starter(verifier);
+        // ipNFTOwnershipVerifier = new IPNFTOwnershipVerifier(verifier);
 
         bytes memory proof_w_inputs = vm.readFileBinary("./circuits/target/ip_nft_ownership_proof.bin");
         bytes memory proofBytes = ProofConverter.sliceAfter64Bytes(proof_w_inputs);
@@ -36,19 +36,7 @@ contract VerifyScript is Script {
         correct[0] = bytes32(0x0000000000000000000000000000000000000000000000000000000000000003);
         correct[1] = correct[0];
 
-        bool equal = starter.verifyEqual(proofBytes, correct);
-        return equal;
-    }
-
-    /**
-     * @dev - Utility function, because the proof file includes the public inputs at the beginning
-     */
-    function sliceAfter64Bytes(bytes memory data) internal pure returns (bytes memory) {
-        uint256 length = data.length - 64;
-        bytes memory result = new bytes(data.length - 64);
-        for (uint i = 0; i < length; i++) {
-            result[i] = data[i + 64];
-        }
-        return result;
+        bool isValidProof = ipNFTOwnershipVerifier.verifyIPNFTOwnership(proofBytes, correct);
+        return isValidProof;
     }
 }

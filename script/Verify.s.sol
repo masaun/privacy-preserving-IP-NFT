@@ -26,7 +26,7 @@ contract VerifyScript is Script {
         correct[0] = bytes32(0x0000000000000000000000000000000000000000000000000000000000000003);
         correct[1] = correct[0];
 
-        bool equal = starter.verifyEqual(proofBytes, correct);
+        bool equal = starter.verifyIPNFTOwnership(proofBytes, correct);
         return equal;
     }
 
