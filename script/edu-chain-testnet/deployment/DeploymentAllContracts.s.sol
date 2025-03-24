@@ -4,7 +4,7 @@ import "forge-std/Script.sol";
 
 /// @dev - ZK (Ultraplonk) circuit, which is generated in Noir.
 import { UltraVerifier } from "../../../contracts/circuit/plonk_vk.sol"; /// @dev - Deployed-Verifier SC, which was generated based on the main.nr
-import { Starter } from "../../../contracts/Starter.sol";
+import { IPNFTOwnershipVerifier } from "../../../contracts/circuit/IPNFTOwnershipVerifier.sol";
 
 //import { SafeERC20 } from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
@@ -16,7 +16,7 @@ import { Starter } from "../../../contracts/Starter.sol";
 contract DeploymentAllContracts is Script {
     //using SafeERC20 for MockRewardToken;
     UltraVerifier public verifier;
-    Starter public starter;
+    IPNFTOwnershipVerifier public ipNFTOwnershipVerifier;
 
     function setUp() public {}
 
@@ -29,7 +29,7 @@ contract DeploymentAllContracts is Script {
 
         /// @dev - Deploy SCs
         verifier = new UltraVerifier();
-        starter = new Starter(verifier);
+        ipNFTOwnershipVerifier = new IPNFTOwnershipVerifier(verifier);
 
         vm.stopBroadcast();
 
@@ -38,7 +38,7 @@ contract DeploymentAllContracts is Script {
         console.logString("\n");
         console.log("%s: %s", "UltraVerifier SC", address(verifier));
         console.logString("\n");
-        console.log("%s: %s", "Starter SC", address(starter));
+        console.log("%s: %s", "IPNFTOwnershipVerifier SC", address(ipNFTOwnershipVerifier));
         console.logString("\n");
     }
 }

@@ -1,29 +1,29 @@
 pragma solidity ^0.8.17;
 
-import { Starter } from "../contracts/Starter.sol";
+import { IPNFTOwnershipVerifier } from "../contracts/circuit/IPNFTOwnershipVerifier.sol";
 import { UltraVerifier } from "../contracts/circuit/plonk_vk.sol";
 //import "../circuits/target/contract.sol";
 import "forge-std/console.sol";
 
-import "forge-std/Test.sol";
-import {NoirHelper} from "foundry-noir-helper/NoirHelper.sol";
+import { Test } from "forge-std/Test.sol";
+import { NoirHelper } from "foundry-noir-helper/NoirHelper.sol";
 
 
-contract StarterTest is Test {
-    Starter public starter;
+contract IPNFTOwnershipVerifierTest is Test {
+    IPNFTOwnershipVerifier public ipNFTOwnershipVerifier;
     UltraVerifier public verifier;
     NoirHelper public noirHelper;
 
     function setUp() public {
         noirHelper = new NoirHelper();
         verifier = new UltraVerifier();
-        starter = new Starter(verifier);
+        ipNFTOwnershipVerifier = new IPNFTOwnershipVerifier(verifier);
     }
 
     function test_verifyProof() public {
         noirHelper.withInput("x", 1).withInput("y", 1).withInput("return", 1);
         (bytes32[] memory publicInputs, bytes memory proof) = noirHelper.generateProof("test_verifyProof", 2);
-        starter.verifyEqual(proof, publicInputs);
+        ipNFTOwnershipVerifier.verifyIPNFTOwnership(proof, publicInputs);
     }
 
     function test_wrongProof() public {
@@ -31,7 +31,7 @@ contract StarterTest is Test {
         noirHelper.withInput("x", 1).withInput("y", 5).withInput("return", 5);
         (bytes32[] memory publicInputs, bytes memory proof) = noirHelper.generateProof("test_wrongProof", 2);
         vm.expectRevert();
-        starter.verifyEqual(proof, publicInputs);
+        ipNFTOwnershipVerifier.verifyIPNFTOwnership(proof, publicInputs);
     }
 
     // function test_all() public {
