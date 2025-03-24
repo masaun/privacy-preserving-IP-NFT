@@ -21,7 +21,6 @@ cd circuits
 sh circuit_test.sh
 ```
 
-
 <br>
 
 ## SC - Script
@@ -35,6 +34,14 @@ sh ./script/runningScript_Verify.sh
 sh ./script/edu-chain-testnet/runningScript_Verify_onEDUChainTestnet.sh
 ```
 
+<br>
+
+## Utils
+- Run the `poseidonHashGenerator.ts`
+```bash
+sh script/utils/poseidon-hash-generator/runningScript_poseidonHashGenerator.sh
+```
+(Ref: https://nodejs.org/en/learn/typescript/run#running-typescript-with-a-runner )
 
 <br>
 
