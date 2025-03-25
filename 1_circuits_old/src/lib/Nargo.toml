@@ -1,7 +1,8 @@
 [package]
-name="ip_nft_ownership"
+name="poseidon_hash"
 type="bin"
 authors = ["masaun"]
 compiler_version = ">=0.31.0"
 
 [dependencies]
+lib = { path = "../lib" }
