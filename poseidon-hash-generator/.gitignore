@@ -3,5 +3,16 @@ out
 proofs
 broadcast
 .env
-plonk_vk.sol
+#plonk_vk.sol
 circuits/target/*
+
+circuits/Prover.toml
+circuits/Verifier.toml
+circuits/test_verifyProof.toml
+
+lib/foundry-noir-helper/*
+
+.DS_Store
+
+node_modules
+package-lock.json
