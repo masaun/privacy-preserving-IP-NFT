@@ -29,7 +29,7 @@ import { ProofData } from '@noir-lang/types';
  * @notice - Get the circuit artifact (= Compiled Circuit) from the specified path
  */
 async function getCircuitArtifact(): Promise<CompiledCircuit> {
-  let circuitArtifact = await import(`./circuits/poseidon_hash.json`);
+  let circuitArtifact = await import(`../../../circuits/target/ip_nft_ownership.json`);
   return circuitArtifact as CompiledCircuit;
 }
 
@@ -37,20 +37,37 @@ async function getCircuitArtifact(): Promise<CompiledCircuit> {
  * @notice - Get the poseidon hash from the specified data
  */
 async function poseidonHash(data1: any, data2: any, data3: any): Promise<string> {
-  let circuitArtifact = await getCircuitArtifact();
-  const backendPoseidon = new BarretenbergBackend(circuitArtifact);
-  const noirPoseidon = new Noir(circuitArtifact as any, backendPoseidon);
+    let circuitArtifact: CompiledCircuit = await getCircuitArtifact();
+    //console.log(`circuitArtifact: ${JSON.stringify(circuitArtifact)}`);
+    //console.log(`circuitArtifact.bytecode: ${JSON.stringify(circuitArtifact.bytecode)}`);  /// [Result]: Success to retrieve in String.
+    if (!circuitArtifact || !circuitArtifact.bytecode) {
+      throw new Error('Circuit artifact or bytecode is undefined');
+    }
 
-  const hashPrivate = await noirPoseidon.execute({
-    amount1: data1.toString(),
-    amount2: data2.toString(),
-    secretShare: data3.toString(),
-  });
 
-  return hashPrivate.returnValue.toString();
+    const backend = new UltraHonkBackend(circuitArtifact.bytecode);
+    //const backend = new BarretenbergBackend(circuitArtifact);
+    //const backend = new BarretenbergBackend(circuitArtifact.bytecode, { threads: 8 });
+    //const noir = new Noir(circuitArtifact as CompiledCircuit);
+    const noir = new Noir(circuitArtifact as CompiledCircuit);
+  
+    const inputs: InputMap = {
+      //const hashPrivate = await noirPoseidon.execute({
+        amount1: data1.toString(),
+        amount2: data2.toString(),
+        secretShare: data3.toString(),
+      }
+
+    const { witness } = await noir.execute(inputs);
+    // const hashPrivate = await noir.execute({
+    //   amount1: data1.toString(),
+    //   amount2: data2.toString(),
+    //   secretShare: data3.toString(),
+    // });
+  
+    return witness.toString();
+    //return hashPrivate.returnValue.toString();
 }
-
-
 
 
 /**
