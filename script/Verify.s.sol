@@ -1,10 +1,14 @@
 pragma solidity ^0.8.17;
 
 import { Script } from "forge-std/Script.sol";
+import "forge-std/console.sol";
+
 import { IPNFTOwnershipVerifier } from "../contracts/circuit/IPNFTOwnershipVerifier.sol";
 import { UltraVerifier } from "../../contracts/circuit/plonk_vk.sol";
 //import { UltraVerifier } from "../../circuits/target/contract.sol";
 import { ProofConverter } from "./utils/ProofConverter.sol";
+
+import { PoseidonUnit5L } from "iden3-contracts/lib/Poseidon.sol"; /// @dev - iden3/contracts/contracts/lib/Poseidon.sol --> [NOTE]: Import path has been adjusted. See the remapping.txt
 
 contract VerifyScript is Script {
     IPNFTOwnershipVerifier public ipNFTOwnershipVerifier;
@@ -13,6 +17,11 @@ contract VerifyScript is Script {
     function setUp() public {}
 
     function run() public returns (bool) {
+        // @dev - Test
+        uint256 resultInPoseidonHash = computePoseidonHash([uint256(1), uint256(2), uint256(3), uint256(4), uint256(5)]);
+        console.logUint(resultInPoseidonHash);
+
+
         verifier = new UltraVerifier();
         ipNFTOwnershipVerifier = new IPNFTOwnershipVerifier(verifier);
 
@@ -30,6 +39,11 @@ contract VerifyScript is Script {
 
         bool isValidProof = ipNFTOwnershipVerifier.verifyIPNFTOwnership(proofBytes, correctPublicInputs);
         return isValidProof;
+    }
+
+
+    function computePoseidonHash(uint256[5] memory inputs) public pure returns (uint256) {
+        return PoseidonUnit5L.poseidon(inputs); // PoseidonUnit5L for 5 inputs
     }
 
 }
