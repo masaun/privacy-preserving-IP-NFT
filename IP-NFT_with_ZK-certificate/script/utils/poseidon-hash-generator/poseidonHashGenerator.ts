@@ -7,23 +7,7 @@ import { BarretenbergBackend } from '@noir-lang/backend_barretenberg';
 import { compile, createFileManager } from '@noir-lang/noir_wasm';
 import { ProofData } from '@noir-lang/types';
 
-
 //let circuitArtifact: any;
-
-// /**
-//  * @notice - Get the circuit from the specified path
-//  */
-// async function getCircuit(name: string) {
-//   const basePath = resolve(join('../../../circuits', name));
-//   //const basePath = resolve(join('../noir', name));
-//   const fm = createFileManager(basePath);
-//   const compiled = await compile(fm, basePath);
-//   if (!('program' in compiled)) {
-//     throw new Error('Compilation failed');
-//   }
-//   return compiled.program;
-// }
-
 
 /** 
  * @notice - Get the circuit artifact (= Compiled Circuit) from the specified path
@@ -38,8 +22,10 @@ async function getCircuitArtifact(): Promise<CompiledCircuit> {
  */
 async function poseidonHash(data1: any, data2: any, data3: any): Promise<string> {
   let circuitArtifact = await getCircuitArtifact();
-  const backendPoseidon = new BarretenbergBackend(circuitArtifact);
-  const noirPoseidon = new Noir(circuitArtifact as any, backendPoseidon);
+  const backendPoseidon = new UltraHonkBackend(circuitArtifact.bytecode);
+  //const backendPoseidon = new BarretenbergBackend(circuitArtifact);
+  const noirPoseidon = new Noir(circuitArtifact as any);
+  //const noirPoseidon = new Noir(circuitArtifact as any, backendPoseidon);
 
   const hashPrivate = await noirPoseidon.execute({
     amount1: data1.toString(),
