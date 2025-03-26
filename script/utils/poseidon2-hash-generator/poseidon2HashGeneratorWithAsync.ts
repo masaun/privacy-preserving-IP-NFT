@@ -1,12 +1,13 @@
-import { poseidon2Hash } from "@zkpassport/poseidon2"
+import { poseidon2HashAsync } from "@zkpassport/poseidon2"
 
 /** 
- * @notice - Get the poseidon hash from the specified data
+ * @notice - Get the poseidon hash from the specified data asynchronously
  */
-function hashInPoseidon2() {
-  // Hash an array of bigints
+async function hashInPoseidon2() {
+  // Hash an array of bigints asynchronously
   const input = [1n, 2n, 3n]
-  const hash = poseidon2Hash(input)
+  const hash = await poseidon2HashAsync(input) // Using the asynchronous function
+  console.log(hash) // Returns a single bigint hash value
   console.log(`hash (Poseidon2 hash): ${ hash }`); // Returns a single bigint hash value -> [Log]: 16068223842875184682212183064520144190817798559788034419026031423767658184152
 
   return hash;
@@ -16,11 +17,11 @@ function hashInPoseidon2() {
 /**
  * @notice - The main function
  */
-function main() {
+async function main(): Promise<bigint> { // Mark the function as async
   // const data1 = 100;
   // const data2 = 200;
   // const data3 = 300;
-  const hash = hashInPoseidon2(); // Await the promise
+  const hash = await hashInPoseidon2(); // Await the promise
   console.log(`hash (Poseidon2 hash): ${ hash }`); // Returns a single bigint hash value -> [Log]: 16068223842875184682212183064520144190817798559788034419026031423767658184152
   return hash; // Return the resolved value
 }
@@ -28,5 +29,8 @@ function main() {
 /**
  * @notice - Execute the main function
  */
-const hash = main();
-console.log(`hash (at the main()): ${ hash }`);
+main().then((result) => {
+  console.log(`Result: ${result}`);
+}).catch((error) => {
+  console.error(`Error: ${error}`);
+});
