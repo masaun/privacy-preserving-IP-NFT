@@ -45,6 +45,15 @@ sh script/utils/poseidon-hash-generator/runningScript_poseidonHashGenerator.sh
 
 <br>
 
+- Run the `poseidon2HashGenerator.ts`
+```bash
+sh script/utils/poseidon2-hash-generator/runningScript_poseidon2HashGenerator.sh
+```
+(Ref: https://nodejs.org/en/learn/typescript/run#running-typescript-with-a-runner )
+
+
+<br>
+
 <hr>
 
 # Noir with Foundry
