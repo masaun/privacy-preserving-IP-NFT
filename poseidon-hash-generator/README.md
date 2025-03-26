@@ -1,3 +1,10 @@
+# Poseidon Hash Generator
+
+
+<br>
+
+<hr>
+
 # Noir with Foundry
 
 This example uses Foundry to deploy and test a verifier.
