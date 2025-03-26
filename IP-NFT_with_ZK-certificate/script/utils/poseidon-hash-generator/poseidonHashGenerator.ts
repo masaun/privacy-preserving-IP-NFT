@@ -14,6 +14,8 @@ import { ProofData } from '@noir-lang/types';
  */
 async function getCircuitArtifact(): Promise<CompiledCircuit> {
   let circuitArtifact = await import(`./circuits/poseidon_hash.json`);
+  console.log(`circuitArtifact - typeof: ${ typeof circuitArtifact }`);
+  console.log(`circuitArtifact - typeof: ${ typeof JSON.stringify(circuitArtifact) }`);
   return circuitArtifact as CompiledCircuit;
 }
 
@@ -24,31 +26,34 @@ async function poseidonHash(data1: any, data2: any, data3: any): Promise<string>
   let circuitArtifact = await getCircuitArtifact();
   const backendPoseidon = new UltraHonkBackend(circuitArtifact.bytecode);
   //const backendPoseidon = new BarretenbergBackend(circuitArtifact);
-  const noirPoseidon = new Noir(circuitArtifact as any);
+  const noirPoseidon = new Noir(circuitArtifact as CompiledCircuit);
   //const noirPoseidon = new Noir(circuitArtifact as any, backendPoseidon);
 
   const hashPrivate = await noirPoseidon.execute({
-    amount1: data1.toString(),
-    amount2: data2.toString(),
-    secretShare: data3.toString(),
+    value1: data1.toString(), // Match the expected input name
+    value2: data2.toString(), // Match the expected input name
+    value3: data3.toString(), // Match the expected input name
   });
+  console.log(`hashPrivate: ${ hashPrivate }`);
 
   return hashPrivate.returnValue.toString();
 }
 
 
-
-
 /**
  * @notice - Main function
  */
-async function main(): Promise<string> {
+async function main(): Promise<string> { // Mark the function as async
   const data1 = 100;
   const data2 = 200;
   const data3 = 300;
-  const hashValueInPoseidon = await poseidonHash(data1, data2, data3);
+  const hashValueInPoseidon = await poseidonHash(data1, data2, data3); // Await the promise
   console.log(`hashValueInPoseidon: ${hashValueInPoseidon}`);
-  return hashValueInPoseidon;
+  return hashValueInPoseidon; // Return the resolved value
 }
 
-// const a = main();
+main().then((result) => {
+  console.log(`Result: ${result}`);
+}).catch((error) => {
+  console.error(`Error: ${error}`);
+});

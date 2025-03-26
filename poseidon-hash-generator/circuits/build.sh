@@ -4,6 +4,7 @@ echo "Load the environment variables from the .env file..."
 
 echo "Compiling circuit..."
 nargo compile
+#nargo compile --output ./poseidon_hash.json
 if [ $? -ne 0 ]; then
   exit 1
 fi
