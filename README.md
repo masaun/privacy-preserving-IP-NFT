@@ -37,17 +37,20 @@ sh ./script/edu-chain-testnet/runningScript_Verify_onEDUChainTestnet.sh
 <br>
 
 ## Utils
-- Run the `poseidonHashGenerator.ts`
+
+### Hashing with Poseidon2 Hash (Sync)
+- Run the `poseidon2HashGenerator.ts`
 ```bash
-sh script/utils/poseidon-hash-generator/runningScript_poseidonHashGenerator.sh
+sh script/utils/poseidon2-hash-generator/usages/sync/runningScript_poseidon2HashGenerator.sh
 ```
 (Ref: https://nodejs.org/en/learn/typescript/run#running-typescript-with-a-runner )
 
 <br>
 
-- Run the `poseidon2HashGenerator.ts`
+### Hashing with Poseidon2 Hash (Async)
+- Run the `poseidon2HashGeneratorWithAsync.ts`
 ```bash
-sh script/utils/poseidon2-hash-generator/runningScript_poseidon2HashGenerator.sh
+sh script/utils/poseidon2-hash-generator/usages/async/runningScript_poseidon2HashGeneratorWithAsync.sh
 ```
 (Ref: https://nodejs.org/en/learn/typescript/run#running-typescript-with-a-runner )
 
