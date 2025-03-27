@@ -17,21 +17,16 @@ function hashInPoseidon2() {
  * @notice - The main function
  */
 function main() {
-//function main(): Promise<bigint> { // Mark the function as async
   // const data1 = 100;
   // const data2 = 200;
   // const data3 = 300;
   const hash = hashInPoseidon2(); // Await the promise
   console.log(`hash (Poseidon2 hash): ${ hash }`); // Returns a single bigint hash value -> [Log]: 16068223842875184682212183064520144190817798559788034419026031423767658184152
-  //return hash; // Return the resolved value
+  return hash; // Return the resolved value
 }
 
 /**
  * @notice - Execute the main function
  */
-main();
-// main().then((result) => {
-//   console.log(`Result: ${result}`);
-// }).catch((error) => {
-//   console.error(`Error: ${error}`);
-// });
+const hash = main();
+console.log(`hash (at the main()): ${ hash }`);
