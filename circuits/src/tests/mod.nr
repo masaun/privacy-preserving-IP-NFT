@@ -3,6 +3,7 @@ mod test_inputs; // test_inputs.nr
 mod tests {
     use crate::main;                   // src/main.nr
     use crate::data_types::IPNftData;  // src/data_types.nr
+    use std::hash::poseidon2;
 
     #[test]
     fn test_nft_metadata_verifier() {
@@ -17,16 +18,24 @@ mod tests {
             metadata_cid_hash: 0x1efa9d6bb4dfdf86063cc77efdec90eb9262079230f1898049efad264835b6c8
         };
 
+        let expected_nullifier = poseidon2::Poseidon2::hash([root, secret, ip_nft_data.nft_owner, ip_nft_data.nft_token_id, ip_nft_data.metadata_cid_hash], 5);
+
         let nullifier = main(
             root,
             hash_path,
             index,
             secret,
+            expected_nullifier,
             ip_nft_data
         );
 
-        let note_commitment = std::hash::pedersen_hash([secret]);
-        let _nullifier = std::hash::pedersen_hash([root, secret, ip_nft_data.nft_owner, ip_nft_data.nft_token_id, ip_nft_data.metadata_cid_hash]);
+        let inputs_for_note_commitment: [Field; 1] = [secret];
+        let note_commitment = poseidon2::Poseidon2::hash(inputs_for_note_commitment, inputs_for_note_commitment.len());
+        //let note_commitment = std::hash::pedersen_hash([secret]);
+
+        let inputs_for_nullifier: [Field; 5] = [root, secret, ip_nft_data.nft_owner, ip_nft_data.nft_token_id, ip_nft_data.metadata_cid_hash];
+        let _nullifier = poseidon2::Poseidon2::hash(inputs_for_nullifier, inputs_for_nullifier.len());
+        //let _nullifier = std::hash::pedersen_hash([root, secret, ip_nft_data.nft_owner, ip_nft_data.nft_token_id, ip_nft_data.metadata_cid_hash]);
 
         // Constraint check
         assert(nullifier == _nullifier, "Invalid nullifier");
