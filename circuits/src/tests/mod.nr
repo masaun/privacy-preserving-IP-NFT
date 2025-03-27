@@ -31,11 +31,9 @@ mod tests {
 
         let inputs_for_note_commitment: [Field; 1] = [secret];
         let note_commitment = poseidon2::Poseidon2::hash(inputs_for_note_commitment, inputs_for_note_commitment.len());
-        //let note_commitment = std::hash::pedersen_hash([secret]);
 
         let inputs_for_nullifier: [Field; 5] = [root, secret, ip_nft_data.nft_owner, ip_nft_data.nft_token_id, ip_nft_data.metadata_cid_hash];
         let _nullifier = poseidon2::Poseidon2::hash(inputs_for_nullifier, inputs_for_nullifier.len());
-        //let _nullifier = std::hash::pedersen_hash([root, secret, ip_nft_data.nft_owner, ip_nft_data.nft_token_id, ip_nft_data.metadata_cid_hash]);
 
         // Constraint check
         assert(nullifier == _nullifier, "Invalid nullifier");
