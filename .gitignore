@@ -16,3 +16,6 @@ lib/foundry-noir-helper/*
 
 node_modules
 package-lock.json
+
+# The script file of Poseidon2 Hash
+output.json
