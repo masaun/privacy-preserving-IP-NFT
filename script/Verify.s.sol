@@ -18,8 +18,8 @@ contract VerifyScript is Script {
 
     function run() public returns (bool) {
         // @dev - Test
-        uint256 resultInPoseidonHash = computePoseidon2Hash([uint256(1), uint256(2), uint256(3), uint256(4), uint256(5)]);
-        console.logUint(resultInPoseidonHash);
+        string memory resultInPoseidonHash = computePoseidon2Hash();
+        console.logString(resultInPoseidonHash);
 
 
         verifier = new UltraVerifier();
@@ -42,15 +42,24 @@ contract VerifyScript is Script {
     }
 
 
-    function computePoseidon2Hash(uint256[5] memory inputs) public returns (uint256) {
-        // Generate the proof by calling the script using ffi
-        string[] memory ffi_command = new string[] (2);
-        ffi_command[0] = "./script/utils/poseidon2-hash-generator/usages/sync/runningScript_poseidon2HashGenerator.sh";
-        //ffi_command[1] = _testName;
-        bytes memory commandResponse = vm.ffi(ffi_command);
+    function computePoseidon2Hash() public returns (string memory) {
 
-        //return PoseidonUnit5L.poseidon(inputs); // PoseidonUnit5L for 5 inputs
-        return 1; // Temporary
+        string[] memory ffi_commands = new string[](3);
+        ffi_commands[0] = "sh";
+        ffi_commands[1] = "-c";
+        ffi_commands[2] = "cat script/utils/poseidon2-hash-generator/usages/sync/output/output.json | grep 'hash' | awk -F '\"' '{print $4}'"; // Extracts the 'hash' field
+
+        bytes memory poseidon2HashBytes = vm.ffi(ffi_commands);
+        string memory poseidon2HashString = string(poseidon2HashBytes);
+        console.log("Poseidon2 Hash (read from the output.json):", poseidon2HashString);
+
+        // string[] memory ffi_commands = new string[](1);
+        // ffi_commands[0] = "./utils/poseidon2-hash-generator/usages/sync/runningScript_poseidon2HashGenerator.sh";
+        // //ffi_command[1] = _testName;
+        // bytes memory commandResponse = vm.ffi(ffi_commands);
+        // console.log(string(commandResponse));
+
+        return poseidon2HashString;
     }
 
 }

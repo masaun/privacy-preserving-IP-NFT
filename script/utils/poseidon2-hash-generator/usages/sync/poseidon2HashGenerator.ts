@@ -35,8 +35,8 @@ function main() {
 
   /// @dev - Export a return value (= hash) as a JSON file
   const result = {
-    hash: String(hash),
-    message: "Poseidon2 hash-generated is successfully exported"
+    hash: String(hash)
+    //message: "Poseidon2 hash-generated is successfully exported"
   };
   exportJSON(result, "script/utils/poseidon2-hash-generator/usages/sync/output/output.json");
 
