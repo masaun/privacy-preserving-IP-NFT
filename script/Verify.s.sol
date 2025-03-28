@@ -7,7 +7,7 @@ import { IPNFTOwnershipVerifier } from "../contracts/circuit/IPNFTOwnershipVerif
 import { UltraVerifier } from "../../contracts/circuit/plonk_vk.sol";
 //import { UltraVerifier } from "../../circuits/target/contract.sol";
 import { ProofConverter } from "./utils/ProofConverter.sol";
-import { DataTypeConverter } from "./utils/data-type-converter/DataTypeConverter.sol";
+import { DataTypeConverter } from "../../contracts/libraries/DataTypeConverter.sol";
 
 
 contract VerifyScript is Script {
@@ -59,13 +59,8 @@ contract VerifyScript is Script {
         // bytes memory commandResponse = vm.ffi(ffi_commands);
         // console.log(string(commandResponse));
 
-        bytes32 poseidon2HashBytes32 = bytes32(poseidon2HashBytes);
-        //bytes32 poseidon2HashBytes32 = DataTypeConverter.bytesToBytes32(bytes(poseidon2HashBytes));
+        bytes32 poseidon2HashBytes32 = DataTypeConverter.bytesToBytes32(poseidon2HashBytes);
         console.logBytes32(poseidon2HashBytes32);
-
-        // bytes memory data = bytes("This is a longer string");
-        // bytes32 testResult = DataTypeConverter.bytesToBytes32(data);
-        // console.logBytes32(testResult);
 
         return poseidon2HashBytes32;
     }

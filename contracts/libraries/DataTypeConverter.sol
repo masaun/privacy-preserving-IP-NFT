@@ -1,12 +1,15 @@
 pragma solidity ^0.8.17;
 
+import "forge-std/console.sol";
+
 /**
  * @title DataTypeConverter library
  */
 library DataTypeConverter {
 
     /// @notice - Convert bytes to bytes32
-    function bytesToBytes32(bytes memory data) public pure returns (bytes32 result) {
+    function bytesToBytes32(bytes memory data) internal pure returns (bytes32 result) {
+        //console.logBytes(data);
         return bytes32(data);
     }
 
