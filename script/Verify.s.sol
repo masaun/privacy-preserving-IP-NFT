@@ -7,8 +7,8 @@ import { IPNFTOwnershipVerifier } from "../contracts/circuit/IPNFTOwnershipVerif
 import { UltraVerifier } from "../../contracts/circuit/plonk_vk.sol";
 //import { UltraVerifier } from "../../circuits/target/contract.sol";
 import { ProofConverter } from "./utils/ProofConverter.sol";
+import { DataTypeConverter } from "./utils/data-type-converter/DataTypeConverter.sol";
 
-//import { PoseidonUnit5L } from "iden3-contracts/lib/Poseidon.sol"; /// @dev - iden3/contracts/contracts/lib/Poseidon.sol --> [NOTE]: Import path has been adjusted. See the remapping.txt
 
 contract VerifyScript is Script {
     IPNFTOwnershipVerifier public ipNFTOwnershipVerifier;
@@ -18,8 +18,8 @@ contract VerifyScript is Script {
 
     function run() public returns (bool) {
         // @dev - Test
-        string memory resultInPoseidonHash = computePoseidon2Hash();
-        console.logString(resultInPoseidonHash);
+        bytes32 resultInPoseidonHash = computePoseidon2Hash();
+        console.logBytes32(resultInPoseidonHash);
 
 
         verifier = new UltraVerifier();
@@ -42,7 +42,7 @@ contract VerifyScript is Script {
     }
 
 
-    function computePoseidon2Hash() public returns (string memory) {
+    function computePoseidon2Hash() public returns (bytes32) {
 
         string[] memory ffi_commands = new string[](3);
         ffi_commands[0] = "sh";
@@ -59,7 +59,15 @@ contract VerifyScript is Script {
         // bytes memory commandResponse = vm.ffi(ffi_commands);
         // console.log(string(commandResponse));
 
-        return poseidon2HashString;
+        bytes32 poseidon2HashBytes32 = bytes32(poseidon2HashBytes);
+        //bytes32 poseidon2HashBytes32 = DataTypeConverter.bytesToBytes32(bytes(poseidon2HashBytes));
+        console.logBytes32(poseidon2HashBytes32);
+
+        // bytes memory data = bytes("This is a longer string");
+        // bytes32 testResult = DataTypeConverter.bytesToBytes32(data);
+        // console.logBytes32(testResult);
+
+        return poseidon2HashBytes32;
     }
 
 }
