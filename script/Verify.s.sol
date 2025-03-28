@@ -43,7 +43,6 @@ contract VerifyScript is Script {
 
 
     function computePoseidon2Hash() public returns (bytes32) {
-
         string[] memory ffi_commands = new string[](3);
         ffi_commands[0] = "sh";
         ffi_commands[1] = "-c";
