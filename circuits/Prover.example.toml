@@ -3,7 +3,7 @@ root = ""                  # @dev - Merkle Root
 hash_path = ["", ""]
 index = ""
 secret = ""                # @dev - A hidden metadata hash (private)
-expected_nullifier = ""
+expected_nullifier = ""    # @dev - Should be a Poseidon2 Hash
 
 [ip_nft_data]
 nft_owner = ""

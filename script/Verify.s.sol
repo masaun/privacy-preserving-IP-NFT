@@ -7,8 +7,8 @@ import { IPNFTOwnershipVerifier } from "../contracts/circuit/IPNFTOwnershipVerif
 import { UltraVerifier } from "../../contracts/circuit/plonk_vk.sol";
 //import { UltraVerifier } from "../../circuits/target/contract.sol";
 import { ProofConverter } from "./utils/ProofConverter.sol";
+import { DataTypeConverter } from "../../contracts/libraries/DataTypeConverter.sol";
 
-import { PoseidonUnit5L } from "iden3-contracts/lib/Poseidon.sol"; /// @dev - iden3/contracts/contracts/lib/Poseidon.sol --> [NOTE]: Import path has been adjusted. See the remapping.txt
 
 contract VerifyScript is Script {
     IPNFTOwnershipVerifier public ipNFTOwnershipVerifier;
@@ -18,8 +18,8 @@ contract VerifyScript is Script {
 
     function run() public returns (bool) {
         // @dev - Test
-        uint256 resultInPoseidonHash = computePoseidonHash([uint256(1), uint256(2), uint256(3), uint256(4), uint256(5)]);
-        console.logUint(resultInPoseidonHash);
+        bytes32 resultInPoseidonHash = computePoseidon2Hash();
+        console.logBytes32(resultInPoseidonHash);
 
 
         verifier = new UltraVerifier();
@@ -42,8 +42,29 @@ contract VerifyScript is Script {
     }
 
 
-    function computePoseidonHash(uint256[5] memory inputs) public pure returns (uint256) {
-        return PoseidonUnit5L.poseidon(inputs); // PoseidonUnit5L for 5 inputs
+    function computePoseidon2Hash() public returns (bytes32) {
+        /// @dev - Run the Poseidon2 hash generator script
+        string[] memory ffi_commands_for_generating_poseidon2_hash = new string[](2);
+        ffi_commands_for_generating_poseidon2_hash[0] = "sh";
+        ffi_commands_for_generating_poseidon2_hash[1] = "script/utils/poseidon2-hash-generator/usages/sync/runningScript_poseidon2HashGenerator.sh";
+        bytes memory commandResponse = vm.ffi(ffi_commands_for_generating_poseidon2_hash);
+        console.log(string(commandResponse));
+
+        /// @dev - Write the output.json of the Poseidon2 hash-generated and Read the 'hash' field from the output.json
+        string[] memory ffi_commands_for_generating_output_json = new string[](3);
+        ffi_commands_for_generating_output_json[0] = "sh";
+        ffi_commands_for_generating_output_json[1] = "-c";
+        ffi_commands_for_generating_output_json[2] = "cat script/utils/poseidon2-hash-generator/usages/sync/output/output.json | grep 'hash' | awk -F '\"' '{print $4}'"; // Extracts the 'hash' field
+
+        bytes memory poseidon2HashBytes = vm.ffi(ffi_commands_for_generating_output_json);
+        string memory poseidon2HashString = string(poseidon2HashBytes);
+        console.log("Poseidon2 Hash (read from the output.json):", poseidon2HashString);
+
+        /// @dev - Convert the data type of the poseidon2 hash-generated from bytes to bytes32
+        bytes32 poseidon2HashBytes32 = DataTypeConverter.bytesToBytes32(poseidon2HashBytes);
+        console.logBytes32(poseidon2HashBytes32);
+
+        return poseidon2HashBytes32;
     }
 
 }
