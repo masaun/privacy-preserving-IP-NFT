@@ -1,6 +1,6 @@
 import * as fs from "fs";
 
-import { poseidon2Hash } from "@zkpassport/poseidon2"
+import { poseidon2Hash } from "@zkpassport/poseidon2";
 
 /** 
  * @notice - Get the poseidon hash from the specified data

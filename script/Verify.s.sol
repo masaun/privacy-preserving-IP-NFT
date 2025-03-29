@@ -26,8 +26,9 @@ contract VerifyScript is Script {
         ipNFTOwnershipVerifier = new IPNFTOwnershipVerifier(verifier);
 
         bytes32 merkleRoot = 0x215597bacd9c7e977dfc170f320074155de974be494579d2586e5b268fa3b629;
-        bytes32 nullifierHash = computePoseidon2Hash(); // [TODO]: This should be "0x168758332d5b3e2d13be8048c8011b454590e06c44bce7f702f09103eef5a373"
+        //bytes32 nullifierHash = computePoseidon2Hash(); // [TODO]: This should be "0x168758332d5b3e2d13be8048c8011b454590e06c44bce7f702f09103eef5a373"
         //bytes32 nullifierHash = 10190015755989328289879378487807721086446093622177241109507523918927702106995;
+        bytes32 nullifierHash = 0x168758332d5b3e2d13be8048c8011b454590e06c44bce7f702f09103eef5a373; // [Result]: Successful (NOTE: This is equal to Field(10190015755989328289879378487807721086446093622177241109507523918927702106995) in Noir)
         console.logBytes32(nullifierHash);
 
         bytes memory proof_w_inputs = vm.readFileBinary("./circuits/target/ip_nft_ownership_proof.bin");
@@ -68,17 +69,8 @@ contract VerifyScript is Script {
         bytes32 poseidon2HashBytes32 = DataTypeConverter.bytesToBytes32(poseidon2HashBytes);
         console.logBytes32(poseidon2HashBytes32);
 
-        /// @dev - Test of 254-bit covertion operation
-        // uint256 hashIn254Bit = hashToField(poseidon2HashBytes32);
-        // console.logUint(hashIn254Bit); // [Log]: 22248477967052183372107787209157336655320796416731665409264174357672973840439
-
         //return poseidon2HashBytes;
         return poseidon2HashBytes32;
     }
-
-    // function hashToField(bytes32 hash) public pure returns (uint256) {
-    //     uint256 FIELD_MODULUS = (1 << 254) - 1; // 2^254 - 1
-    //     return uint256(hash) % FIELD_MODULUS; // Reduce to 254-bit range
-    // }
 
 }
