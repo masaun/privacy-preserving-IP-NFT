@@ -2,11 +2,6 @@ import * as fs from "fs";
 
 import { poseidon2Hash } from "@zkpassport/poseidon2";
 
-import { Noir } from "@noir-lang/noir_js";
-import { UltraHonkBackend } from "@aztec/bb.js";
-import circuit from "../../assets/circuit.json";
-
-
 /** 
  * @notice - Get the poseidon hash from the specified data
  */
