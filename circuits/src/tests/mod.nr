@@ -20,6 +20,7 @@ mod tests {
 
         let expected_nullifier: Field = 10190015755989328289879378487807721086446093622177241109507523918927702106995; // @dev - Same with the "hash" in the output.json
         //let expected_nullifier = poseidon2::Poseidon2::hash([root, secret, ip_nft_data.nft_owner, ip_nft_data.nft_token_id, ip_nft_data.metadata_cid_hash], 5);
+        println(expected_nullifier); // [Log]: 0x168758332d5b3e2d13be8048c8011b454590e06c44bce7f702f09103eef5a373
 
         let nullifier = main(
             root,
@@ -29,6 +30,7 @@ mod tests {
             expected_nullifier,
             ip_nft_data
         );
+        println(nullifier); // [Log]: 0x168758332d5b3e2d13be8048c8011b454590e06c44bce7f702f09103eef5a373
 
         let inputs_for_note_commitment: [Field; 1] = [secret];
         let note_commitment = poseidon2::Poseidon2::hash(inputs_for_note_commitment, inputs_for_note_commitment.len());
@@ -40,7 +42,7 @@ mod tests {
         // Constraint check
         assert(nullifier == _nullifier, "Invalid nullifier");
 
-        println(nullifier);
         println("The test of the test_nft_metadata_verifier()) has been successful");
     }
+
 }
