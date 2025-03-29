@@ -2,14 +2,19 @@ import * as fs from "fs";
 
 import { poseidon2Hash } from "@zkpassport/poseidon2";
 
+import { Noir } from "@noir-lang/noir_js";
+import { UltraHonkBackend } from "@aztec/bb.js";
+import circuit from "../../assets/circuit.json";
+
+
 /** 
  * @notice - Get the poseidon hash from the specified data
  */
 function computePoseidon2Hash() {  
   // Hash an array of bigints
-  const input = getInputData();
-  //const input = [1n, 2n, 3n]; 
-  const hash = poseidon2Hash(input);
+  const input_for_nullifier = getInputData();
+  //const input_for_nullifier = [1n, 2n, 3n]; 
+  const hash = poseidon2Hash(input_for_nullifier);
   console.log(`hash (Poseidon2 hash): ${ hash }`); // Returns a single bigint hash value -> [Log]: 16068223842875184682212183064520144190817798559788034419026031423767658184152
 
   return hash;
