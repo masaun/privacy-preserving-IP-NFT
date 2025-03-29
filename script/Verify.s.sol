@@ -69,16 +69,16 @@ contract VerifyScript is Script {
         console.logBytes32(poseidon2HashBytes32);
 
         /// @dev - Test of 254-bit covertion operation
-        uint256 hashIn254Bit = hashToField(poseidon2HashBytes32);
-        console.logUint(hashIn254Bit); // [Log]: 22248477967052183372107787209157336655320796416731665409264174357672973840439
+        // uint256 hashIn254Bit = hashToField(poseidon2HashBytes32);
+        // console.logUint(hashIn254Bit); // [Log]: 22248477967052183372107787209157336655320796416731665409264174357672973840439
 
         //return poseidon2HashBytes;
         return poseidon2HashBytes32;
     }
 
-    function hashToField(bytes32 hash) public pure returns (uint256) {
-        uint256 FIELD_MODULUS = (1 << 254) - 1; // 2^254 - 1
-        return uint256(hash) % FIELD_MODULUS; // Reduce to 254-bit range
-    }
+    // function hashToField(bytes32 hash) public pure returns (uint256) {
+    //     uint256 FIELD_MODULUS = (1 << 254) - 1; // 2^254 - 1
+    //     return uint256(hash) % FIELD_MODULUS; // Reduce to 254-bit range
+    // }
 
 }

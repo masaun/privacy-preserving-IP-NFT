@@ -14,6 +14,8 @@ fn main(
     expected_nullifier: Field,
     ip_nft_data: IPNftData
 ) -> pub Field {
+    println(expected_nullifier); // [Log]: 0x168758332d5b3e2d13be8048c8011b454590e06c44bce7f702f09103eef5a373
+
     let inputs_for_note_commitment: [Field; 1] = [secret];
     let note_commitment = poseidon2::Poseidon2::hash(inputs_for_note_commitment, inputs_for_note_commitment.len());
 
