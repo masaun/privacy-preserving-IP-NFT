@@ -18,20 +18,22 @@ contract VerifyScript is Script {
 
     function run() public returns (bool) {
         // @dev - Test
-        bytes32 resultInPoseidonHash = computePoseidon2Hash();
-        console.logBytes32(resultInPoseidonHash);
+        //bytes32 resultInPoseidonHash = computePoseidon2Hash();
+        //console.logBytes32(resultInPoseidonHash);
 
 
         verifier = new UltraVerifier();
         ipNFTOwnershipVerifier = new IPNFTOwnershipVerifier(verifier);
 
+        bytes32 merkleRoot = 0x215597bacd9c7e977dfc170f320074155de974be494579d2586e5b268fa3b629;
+        bytes32 nullifierHash = computePoseidon2Hash();
+        //bytes32 nullifierHash = 0x1efa9d6bb4dfdf86063cc77efdec90eb9262079230f1898049efad264835b6c8;
+        console.logBytes32(nullifierHash);
+
         bytes memory proof_w_inputs = vm.readFileBinary("./circuits/target/ip_nft_ownership_proof.bin");
         bytes memory proofBytes = ProofConverter.sliceAfter64Bytes(proof_w_inputs);
         // string memory proof = vm.readLine("./circuits/target/ip_nft_ownership_proof.bin");
         // bytes memory proofBytes = vm.parseBytes(proof);
-
-        bytes32 merkleRoot = 0x215597bacd9c7e977dfc170f320074155de974be494579d2586e5b268fa3b629;
-        bytes32 nullifierHash = 0x1efa9d6bb4dfdf86063cc77efdec90eb9262079230f1898049efad264835b6c8;
 
         bytes32[] memory correctPublicInputs = new bytes32[](2);
         correctPublicInputs[0] = merkleRoot;
@@ -41,7 +43,9 @@ contract VerifyScript is Script {
         return isValidProof;
     }
 
-
+    /**
+     * @dev - Compute Poseidon2 hash
+     */
     function computePoseidon2Hash() public returns (bytes32) {
         /// @dev - Run the Poseidon2 hash generator script
         string[] memory ffi_commands_for_generating_poseidon2_hash = new string[](2);
