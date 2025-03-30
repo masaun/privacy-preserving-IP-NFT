@@ -21,7 +21,6 @@ contract VerifyScript is Script {
         //bytes32 resultInPoseidonHash = computePoseidon2Hash();
         //console.logBytes32(resultInPoseidonHash);
 
-
         verifier = new UltraVerifier();
         ipNFTOwnershipVerifier = new IPNFTOwnershipVerifier(verifier);
 

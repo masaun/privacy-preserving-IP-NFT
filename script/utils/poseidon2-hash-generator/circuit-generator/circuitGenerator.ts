@@ -26,7 +26,12 @@ export async function generateProof() {
     const proof = await backend.generateProof(witness); // This "proof" generated would includes both the "proof.proof" and "proof.publicInputs"
     const provingTime = performance.now() - startTime;
   
-    return { proof: proof.proof, publicInputs: proof.publicInputs, provingTime };  // The "public input" data can be retrieved via the "proof.publicInputs"
+    return { 
+        proof: proof.proof,
+        publicInputs: proof.publicInputs, 
+        provingTime,
+        input_data
+    };  // The "public input" data can be retrieved via the "proof.publicInputs"
 }
   
 /**
