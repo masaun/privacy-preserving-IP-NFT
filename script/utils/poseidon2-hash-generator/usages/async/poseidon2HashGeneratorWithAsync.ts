@@ -14,6 +14,8 @@ async function computePoseidon2Hash() {
   console.log(`nullifier (proof.publicInputs[1])): ${ publicInputs[1] }`); // [Log]: 0x168758332d5b3e2d13be8048c8011b454590e06c44bce7f702f09103eef5a373
   console.log(`provingTime (ms): ${ provingTime }`); // [Log]: 0.
   console.log(`input_data: ${ input_data }`); // [Log]: 0.0000000000000001
+  const merkleRoot = publicInputs[0];
+  const nullifier = publicInputs[1];
 
   // Hash an array of bigints asynchronously
   const input_for_nullifier = getInputData(input_data);
@@ -22,7 +24,7 @@ async function computePoseidon2Hash() {
   console.log(hash) // Returns a single bigint hash value
   console.log(`hash (Poseidon2 hash): ${ hash }`); // Returns a single bigint hash value -> [Log]: 16068223842875184682212183064520144190817798559788034419026031423767658184152
 
-  return hash;
+  return { hash, nullifier, merkleRoot };
 }
 
 /** 
@@ -65,13 +67,16 @@ async function main(): Promise<bigint> { // Mark the function as async
   // const data1 = 100;
   // const data2 = 200;
   // const data3 = 300;
-  const hash = await computePoseidon2Hash(); // Await the promise
-  console.log(`hash (Poseidon2 hash): ${ hash }`); // Returns a single bigint hash value -> [Log]: 16068223842875184682212183064520144190817798559788034419026031423767658184152
+  const { hash, nullifier, merkleRoot } = await computePoseidon2Hash(); // Await the promise
+  console.log(`hash (Poseidon2 hash): ${ hash }`); // Returns a single BigInt hash value -> [Log]: 16068223842875184682212183064520144190817798559788034419026031423767658184152
+  console.log(`nullifier: ${ hash }`);
 
   /// @dev - Export a return value (= hash) as a JSON file
   const result = {
-    hash: String(hash)
-    //message: "Poseidon2 hash-generated is successfully exported"
+    hash: String(hash),
+    nullifier: String(nullifier),
+    merkleRoot: String(merkleRoot),
+    //message: "Poseidon2 hash-generated is successfully exported",
   };
   exportJSON(result, "script/utils/poseidon2-hash-generator/usages/async/output/output.json");
 
