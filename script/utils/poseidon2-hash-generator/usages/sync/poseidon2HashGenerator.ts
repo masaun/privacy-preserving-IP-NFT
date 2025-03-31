@@ -1,19 +1,36 @@
 import * as fs from "fs";
 
-import { poseidon2Hash } from "@zkpassport/poseidon2"
+import { poseidon2Hash } from "@zkpassport/poseidon2";
 
 /** 
  * @notice - Get the poseidon hash from the specified data
  */
-function computePoseidon2Hash() {
+function computePoseidon2Hash() {  
   // Hash an array of bigints
-  const input = [1n, 2n, 3n]
-  const hash = poseidon2Hash(input)
+  const input_for_nullifier = getInputData();
+  //const input_for_nullifier = [1n, 2n, 3n]; 
+  const hash = poseidon2Hash(input_for_nullifier);
   console.log(`hash (Poseidon2 hash): ${ hash }`); // Returns a single bigint hash value -> [Log]: 16068223842875184682212183064520144190817798559788034419026031423767658184152
 
   return hash;
 }
 
+/** 
+ * @notice - Get the input data for the poseidon hash
+ */
+function getInputData() {
+  const root = BigInt(0x215597bacd9c7e977dfc170f320074155de974be494579d2586e5b268fa3b629);
+  const secret = BigInt(1);
+  const nft_owner = BigInt(0xC6093Fd9cc143F9f058938868b2df2daF9A91d28);
+  const nft_token_id = BigInt(1);
+  const metadata_cid_hash = BigInt(0x1efa9d6bb4dfdf86063cc77efdec90eb9262079230f1898049efad264835b6c8);
+
+  console.log(`nft_token_id (in BigInt): ${nft_token_id}`);
+
+  const inputs_for_nullifier = [nft_token_id];
+  //const inputs_for_nullifier = [root, secret, nft_owner, nft_token_id, metadata_cid_hash];
+  return inputs_for_nullifier;
+}
 
 /**
  * @notice - The function to export JSON file

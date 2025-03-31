@@ -2,7 +2,7 @@ echo "Load the environment variables from the .env file..."
 #source .env
 . ./.env
 
-echo "Run the poseidon2HashGenerator.ts with the async mode..."
+echo "Run the poseidon2HashGeneratorWithAsync.ts with the async mode..."
 npx tsx script/utils/poseidon2-hash-generator/usages/async/poseidon2HashGeneratorWithAsync.ts  # Success
 #npx ts-node script/utils/poseidon2-hash-generator/usages/async/poseidon2HashGeneratorWithAsync.ts
 
