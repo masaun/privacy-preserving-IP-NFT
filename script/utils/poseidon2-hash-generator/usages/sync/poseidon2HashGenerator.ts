@@ -27,8 +27,8 @@ function getInputData() {
 
   console.log(`nft_token_id (in BigInt): ${nft_token_id}`);
 
-  const inputs_for_nullifier = [nft_token_id];
-  //const inputs_for_nullifier = [root, secret, nft_owner, nft_token_id, metadata_cid_hash];
+  //const inputs_for_nullifier = [nft_token_id];
+  const inputs_for_nullifier = [root, secret, nft_owner, nft_token_id, metadata_cid_hash];
   return inputs_for_nullifier;
 }
 
@@ -49,11 +49,13 @@ function main() {
   // const data3 = 300;
   const hash = computePoseidon2Hash(); // Await the promise
   console.log(`hash (Poseidon2 hash): ${ hash }`); // Returns a single bigint hash value -> [Log]: 16068223842875184682212183064520144190817798559788034419026031423767658184152
+  console.log(`nullifier: ${ hash }`);
 
   /// @dev - Export a return value (= hash) as a JSON file
   const result = {
-    hash: String(hash)
-    //message: "Poseidon2 hash-generated is successfully exported"
+    hash: String(hash),
+    // nullifier: String(nullifier),
+    // merkleRoot: String(merkleRoot),
   };
   exportJSON(result, "script/utils/poseidon2-hash-generator/usages/sync/output/output.json");
 

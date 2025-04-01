@@ -58,7 +58,8 @@ async function getCircuit(name: string): Promise<CompiledCircuit> {
       ],
       index: 0,
       secret: 1,
-      expected_nullifier: "10190015755989328289879378487807721086446093622177241109507523918927702106995",
+      expected_nullifier: "0x1265c921cb8e0dc6c91f70ae08b14352b8f10451aee7582b9ed44abea8d4123c",
+      //expected_nullifier: "10190015755989328289879378487807721086446093622177241109507523918927702106995",
       //expected_nullifier: "0x168758332d5b3e2d13be8048c8011b454590e06c44bce7f702f09103eef5a373"
       
       //[ip_nft_data]
