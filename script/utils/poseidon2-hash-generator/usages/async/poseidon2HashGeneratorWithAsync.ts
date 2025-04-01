@@ -1,7 +1,7 @@
 import * as fs from "fs";
 
 import { poseidon2HashAsync } from "@zkpassport/poseidon2"
-import { generateProof } from "../../circuit-generator/circuitGenerator";
+import { generateProof } from "../../circuit-runner/circuitRunner";
 
 /** 
  * @notice - Get the poseidon hash from the specified data asynchronously
