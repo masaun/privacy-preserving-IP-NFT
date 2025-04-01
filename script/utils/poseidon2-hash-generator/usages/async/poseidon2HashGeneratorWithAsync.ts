@@ -47,8 +47,8 @@ function getInputData(input_data: any) {
 
   console.log(`nft_token_id (in BigInt): ${nft_token_id}`);
 
-  const inputs_for_nullifier = [nft_token_id];
-  //const inputs_for_nullifier = [root, secret, nft_owner, nft_token_id, metadata_cid_hash];
+  //const inputs_for_nullifier = [nft_token_id];
+  const inputs_for_nullifier = [root, secret, nft_owner, nft_token_id, metadata_cid_hash];
   return inputs_for_nullifier;
 }
 
