@@ -42,6 +42,10 @@ contract IPNFTOwnershipVerifierTest is Test {
 
         /// @dev - Generate the proof
         (bytes32[] memory publicInputs, bytes memory proof) = noirHelper.generateProof("test_verifyProof", 2);
+        console.logBytes32(publicInputs[0]); // [Log]: 0x215597bacd9c7e977dfc170f320074155de974be494579d2586e5b268fa3b629
+        console.logBytes32(publicInputs[1]); // [Log]: 0x1265c921cb8e0dc6c91f70ae08b14352b8f10451aee7582b9ed44abea8d4123c
+
+        /// @dev - Verify the proof
         ipNFTOwnershipVerifier.verifyIPNFTOwnership(proof, publicInputs);
     }
 
@@ -68,12 +72,15 @@ contract IPNFTOwnershipVerifierTest is Test {
 
         /// @dev - Generate the proof
         (bytes32[] memory publicInputs, bytes memory proof) = noirHelper.generateProof("test_wrongProof", 2);
+        console.logBytes32(publicInputs[0]); // [Log]: 0x215597bacd9c7e977dfc170f320074155de974be494579d2586e5b268fa3b629
+        console.logBytes32(publicInputs[1]); // [Log]: 0x1265c921cb8e0dc6c91f70ae08b14352b8f10451aee7582b9ed44abea8d4123c
 
         /// @dev - Create a fake public input, which should fail because the public input is wrong
         bytes32[] memory fakePublicInputs = new bytes32[](2);
         fakePublicInputs[0] = publicInputs[0];
         fakePublicInputs[1] = bytes32(uint256(0xddddd));  // @dev - This is wrong publicInput ("nulifieir")
 
+        /// @dev - Verify the proof, which should be reverted
         vm.expectRevert();
         ipNFTOwnershipVerifier.verifyIPNFTOwnership(proof, fakePublicInputs);
     }
