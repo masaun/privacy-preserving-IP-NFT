@@ -1,7 +1,7 @@
 pragma solidity ^0.8.17;
 
 import { IPNFTOwnershipVerifier } from "../contracts/circuit/IPNFTOwnershipVerifier.sol";
-import { UltraVerifier } from "../contracts/circuit/plonk_vk.sol";
+import { UltraVerifier } from "../contracts/circuit/ultra-verifier/plonk_vk.sol";
 //import "../circuits/target/contract.sol";
 import "forge-std/console.sol";
 
@@ -33,7 +33,7 @@ contract IPNFTOwnershipVerifierTest is Test {
         noirHelper.withInput("root", bytes32(uint256(0x215597bacd9c7e977dfc170f320074155de974be494579d2586e5b268fa3b629)))
                   .withInput("hash_path", hash_path_bytes32)
                   .withInput("index", bytes32(uint256(0)))
-                  .withInput("secret",bytes32(uint256(1)))                   
+                  .withInput("secret", bytes32(uint256(1)))                   
                   .withInput("expected_nullifier", bytes32(uint256(0x1265c921cb8e0dc6c91f70ae08b14352b8f10451aee7582b9ed44abea8d4123c)))
                   .withStruct("ip_nft_data")
                   .withStructInput("nft_owner", bytes32(uint256(uint160(0xC6093Fd9cc143F9f058938868b2df2daF9A91d28)))) // [NOTE]: An input data of 'Address' type must be cast to uint160 first. Then, it should be cast to uint256 and bytes32.
