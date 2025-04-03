@@ -2,7 +2,7 @@ pragma solidity ^0.8.17;
 
 import { Script } from "forge-std/Script.sol";
 import { IPNFTOwnershipVerifier } from "../../contracts/circuit/IPNFTOwnershipVerifier.sol";
-import { UltraVerifier } from "../../contracts/circuit/plonk_vk.sol";
+import { UltraVerifier } from "../../contracts/circuit/ultra-verifier/plonk_vk.sol";
 //import { UltraVerifier } from "../../circuits/target/contract.sol";
 import { ProofConverter } from "../utils/ProofConverter.sol";
 

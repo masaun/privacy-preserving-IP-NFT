@@ -36,6 +36,19 @@ sh ./script/edu-chain-testnet/runningScript_Verify_onEDUChainTestnet.sh
 
 <br>
 
+## SC - Test
+- Run the `IPNFTOwnershipVerifier.t.sol` on the Local Network
+```bash
+sh ./test/runningTest_IPNFTOwnershipVerifier.sh
+```
+
+- Run the `IPNFTOwnershipVerifierOnEDUChainTestnet.t.sol` on the EDU Chain Testnet
+```bash
+sh ./test/edu-chain-testnet/runningScript_Verify_onEDUChainTestnet.sh
+```
+
+<br>
+
 ## Utils
 
 ### Hashing with Poseidon2 Hash (Sync)
