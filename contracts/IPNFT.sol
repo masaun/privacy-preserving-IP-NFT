@@ -6,6 +6,7 @@ import { ERC721URIStorage } from "@openzeppelin/contracts/token/ERC721/extension
 
 /**
  * @title - IP NFT contract
+ * @notice - NFT can be minted and its ownership can be verified without revealing metadata by verfying a ZK Proof.
  */
 contract IPNFT is ERC721URIStorage {
     IPNFTOwnershipVerifier public ipNFTOwnershipVerifier;
@@ -15,19 +16,28 @@ contract IPNFT is ERC721URIStorage {
 
     uint256 private nextTokenId = 1;
 
-    constructor() ERC721("IPNFT", "IPNFT") {}
+    constructor() ERC721("IP-NFT", "IP-NFT") {}
 
+    /**
+     * @notice - Mint a new IP-NFT
+     * @dev - A given metadata URI is stored in the tokenURI mapping of the ERC721 contract.
+     * @dev - A given metadata URI includes a CID (IPFS Hash), where a proof is stored (instead of that its actual metadata is stored)
+     * @param metadataURI - The URI of the metadata associated with the NFT (i.e. IPFS Hash, which is called "CID")
+     */
     function mintIPNFT(string memory metadataURI, bytes32 metadataHash) public {
         uint256 tokenId = nextTokenId;
         _mint(msg.sender, tokenId);
-        _setTokenURI(tokenId, metadataURI);
-        metadataHashes[tokenId] = metadataHash; // Store a "metadata hash (as a secret) into the "private" storage
+        _setTokenURI(tokenId, metadataURI);     /// @dev - A given metadata URI includes a CID (IPFS Hash), where a proof is stored (instead of that its actual metadata is stored)
+        metadataHashes[tokenId] = metadataHash; /// Store a "metadata hash (as a secret) into the "private" storage
         nextTokenId++;
     }
 
-    function verifyIPNFTOwnership(bytes calldata proof, bytes32 merkleRoot, bytes32 nullifierHash) public view returns (bool isValidProof) {
-        //require(ownerOf(tokenId) != address(0), "This IPNFT does not exist");
-
+    /** 
+     * @notice - Verify the proof without revealing metadata
+     */
+    function verifyIPNFTOwnership(uint256 tokenId, bytes calldata proof, bytes32 merkleRoot, bytes32 nullifierHash) public view returns (bool isValidProof) {
+        require(ownerOf(tokenId) != address(0), "This IPNFT does not exist");
+        
         require(!nullifiers[nullifierHash], "This ZK Proof has been already submitted"); // Prevent from 'double-spending' of a ZK Proof.
         nullifiers[nullifierHash] = true;
 
