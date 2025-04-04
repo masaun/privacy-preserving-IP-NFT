@@ -12,7 +12,7 @@ contract IPNFT is ERC721URIStorage {
     IPNFTOwnershipVerifier public ipNFTOwnershipVerifier;
 
     mapping(uint256 => bytes32) private metadataHashes; // Store a "metadata hash" into the "private" storage.
-    mapping(bytes32 => bool) private nullifiers;        // Store a "nullifier" into the "private" storage.
+    mapping(uint256 => mapping(address => mapping(bytes32 => bool))) private nullifiers;        // Store a "nullifier" into the "private" storage.
 
     uint256 private nextTokenId = 1;
 
@@ -34,7 +34,7 @@ contract IPNFT is ERC721URIStorage {
         publicInputs[0] = merkleRoot;
         publicInputs[1] = nullifierHash;
         require(verifyIPNFTOwnershipProof(proof, publicInputs), "Invalid proof");        
-        nullifiers[nullifierHash] = true;
+        nullifiers[tokenId][ownerOf(tokenId)][nullifierHash] = true;
         
         nextTokenId++;
     }
@@ -45,7 +45,7 @@ contract IPNFT is ERC721URIStorage {
     function verifyIPNFTOwnershipProof(uint256 tokenId, bytes calldata proof, bytes32 merkleRoot, bytes32 nullifierHash) public view returns (bool isValidProof) {
         require(ownerOf(tokenId) != address(0), "This IPNFT does not exist");
         
-        require(!nullifiers[nullifierHash], "This ZK Proof has already been submitted"); // Prevent from 'double-spending' of a ZK Proof.
+        require(!nullifiers[tokenId][ownerOf(tokenId)][nullifierHash], "This ZK Proof has already been submitted"); // Prevent from 'double-spending' of a ZK Proof.
         //nullifiers[nullifierHash] = true;
 
         bytes32[] memory publicInputs = new bytes32[](2);
