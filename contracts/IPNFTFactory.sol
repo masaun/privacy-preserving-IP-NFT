@@ -16,9 +16,10 @@ contract IPNFTFactory {
     /**
      * @notice - Mint a new IP-NFT
      */
-    function createNewIPNFT() public {
+    function createNewIPNFT() public returns (IPNFT ipNFT) {
         IPNFT newIPNFT = new IPNFT(msg.sender);
         ownerOfIPNFTs[msg.sender] = address(newIPNFT);
+        return newIPNFT;
     }
 
 }

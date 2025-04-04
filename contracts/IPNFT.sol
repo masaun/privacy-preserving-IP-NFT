@@ -2,6 +2,7 @@
 pragma solidity ^0.8.0;
 
 import { IPNFTOwnershipVerifier } from "./circuit/IPNFTOwnershipVerifier.sol";
+import { ERC721 } from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import { ERC721URIStorage } from "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 
@@ -17,8 +18,8 @@ contract IPNFT is ERC721URIStorage, Ownable {
 
     uint256 private nextTokenId = 1;
 
-    constructor(address creator) ERC721("IP-NFT", "IP-NFT") {
-        transferOwnership(creator); /// @dev - Transfer the ownership of this IPNFT contract to a given creator, who is the caller of the IPNFTFactory#createNewIPNFT() function.
+    constructor(address creator) ERC721("IP-NFT", "IP-NFT") Ownable(creator) {
+        //transferOwnership(creator); /// @dev - Transfer the ownership of this IPNFT contract to a given creator, who is the caller of the IPNFTFactory#createNewIPNFT() function.
     }
 
     /**
@@ -27,7 +28,7 @@ contract IPNFT is ERC721URIStorage, Ownable {
      * @dev - A given metadata URI includes a CID (IPFS Hash), where a proof is stored (instead of that its actual metadata is stored)
      * @param metadataURI - The URI of the metadata associated with the NFT (i.e. IPFS Hash, which is called "CID")
      */
-    function mintIPNFT(string memory metadataURI, bytes32 metadataHash, bytes calldata proof, bytes32 merkleRoot, bytes32 nullifierHash) public {
+    function mintIPNFT(string memory metadataURI, bytes32 metadataHash, bytes calldata proof, bytes32 merkleRoot, bytes32 nullifierHash) public returns (uint256 tokenId) {
         uint256 tokenId = nextTokenId;
         _mint(msg.sender, tokenId);
         _setTokenURI(tokenId, metadataURI);     /// @dev - A given metadata URI includes a CID (IPFS Hash), where a proof is stored (instead of that its actual metadata is stored)
@@ -36,7 +37,7 @@ contract IPNFT is ERC721URIStorage, Ownable {
         bytes32[] memory publicInputs = new bytes32[](2);
         publicInputs[0] = merkleRoot;
         publicInputs[1] = nullifierHash;
-        require(verifyIPNFTOwnershipProof(proof, publicInputs), "Invalid proof");        
+        require(ipNFTOwnershipVerifier.verifyIPNFTOwnershipProof(proof, publicInputs), "Invalid proof");        
         nullifiers[tokenId][ownerOf(tokenId)][nullifierHash] = true;
         
         nextTokenId++;

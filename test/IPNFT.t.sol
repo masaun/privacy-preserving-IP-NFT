@@ -1,0 +1,70 @@
+pragma solidity ^0.8.17;
+
+import { IPNFTFactory } from "../contracts/IPNFTFactory.sol";
+import { IPNFT } from "../contracts/IPNFT.sol";
+
+import "forge-std/console.sol";
+
+import { Test } from "forge-std/Test.sol";
+import { NoirHelper } from "foundry-noir-helper/NoirHelper.sol";
+
+
+contract IPNFTTest is Test {
+    IPNFTFactory public ipNFTFactory;
+    IPNFT public ipNFT;
+    NoirHelper public noirHelper;
+
+    function setUp() public {
+        noirHelper = new NoirHelper();
+        ipNFTFactory = new IPNFTFactory(); /// @dev - Deploy the IPNFTFactory contract
+    }
+
+    function test_createNewIPNFT() public {
+        ipNFT = ipNFTFactory.createNewIPNFT();
+        assertEq(ipNFT.owner(), address(this)); // Verify the owner is set correctly
+    }
+
+    /**
+     * @notice - Mint a new IP-NFT
+     */
+    function test_mintIPNFT() public {
+        string memory metadataURI = "ipfs://QmXyZ..."; // Replace with actual IPFS URI
+        bytes32 metadataHash = 0x1efa9d6bb4dfdf86063cc77efdec90eb9262079230f1898049efad264835b6c8; // Replace with actual metadata hash
+
+        bytes32 merkleRoot;
+        bytes32 nullifierHash;
+        (bytes memory proof, bytes32[] memory publicInputs) = generateNewProof(); // Generate proof and merkle root using NoirHelper
+        merkleRoot = publicInputs[0];
+        nullifierHash = publicInputs[1];
+
+        uint256 tokenId = ipNFT.mintIPNFT(metadataURI, metadataHash, proof, merkleRoot, nullifierHash);
+    }
+
+    /**
+     * @notice - Generate a new proof using NoirHelper
+     */
+    function generateNewProof() public returns (bytes memory _proof, bytes32[] memory _publicInputs) {
+        uint256[] memory hash_path = new uint256[](2);
+        hash_path[0] = 0x1efa9d6bb4dfdf86063cc77efdec90eb9262079230f1898049efad264835b6c8;
+        hash_path[1] = 0x2a653551d87767c545a2a11b29f0581a392b4e177a87c8e3eb425c51a26a8c77;
+
+        bytes32[] memory hash_path_bytes32 = new bytes32[](2);
+        hash_path_bytes32[0] = bytes32(hash_path[0]);
+        hash_path_bytes32[1] = bytes32(hash_path[1]);
+
+        noirHelper.withInput("root", bytes32(uint256(0x215597bacd9c7e977dfc170f320074155de974be494579d2586e5b268fa3b629)))
+                  .withInput("hash_path", hash_path_bytes32)
+                  .withInput("index", bytes32(uint256(0)))
+                  .withInput("secret", bytes32(uint256(1)))                   
+                  .withInput("expected_nullifier", bytes32(uint256(0x1265c921cb8e0dc6c91f70ae08b14352b8f10451aee7582b9ed44abea8d4123c)))
+                  .withStruct("ip_nft_data")
+                  .withStructInput("nft_owner", bytes32(uint256(uint160(0xC6093Fd9cc143F9f058938868b2df2daF9A91d28)))) // [NOTE]: An input data of 'Address' type must be cast to uint160 first. Then, it should be cast to uint256 and bytes32.
+                  .withStructInput("nft_token_id", bytes32(uint256(1)))
+                  .withStructInput("metadata_cid_hash", bytes32(uint256(0x1efa9d6bb4dfdf86063cc77efdec90eb9262079230f1898049efad264835b6c8)));
+
+        (bytes32[] memory publicInputs, bytes memory proof) = noirHelper.generateProof("test_verifyProof", 2);
+        console.logBytes32(publicInputs[0]); // [Log]: 0x215597bacd9c7e977dfc170f320074155de974be494579d2586e5b268fa3b629
+        console.logBytes32(publicInputs[1]); // [Log]: 0x1265c921cb8e0dc6c91f70ae08b14352b8f10451aee7582b9ed44abea8d4123c
+        return (proof, publicInputs);
+    }
+}
