@@ -24,22 +24,29 @@ contract IPNFT is ERC721URIStorage {
      * @dev - A given metadata URI includes a CID (IPFS Hash), where a proof is stored (instead of that its actual metadata is stored)
      * @param metadataURI - The URI of the metadata associated with the NFT (i.e. IPFS Hash, which is called "CID")
      */
-    function mintIPNFT(string memory metadataURI, bytes32 metadataHash) public {
+    function mintIPNFT(string memory metadataURI, bytes32 metadataHash, bytes calldata proof, bytes32 merkleRoot, bytes32 nullifierHash) public {
         uint256 tokenId = nextTokenId;
         _mint(msg.sender, tokenId);
         _setTokenURI(tokenId, metadataURI);     /// @dev - A given metadata URI includes a CID (IPFS Hash), where a proof is stored (instead of that its actual metadata is stored)
         metadataHashes[tokenId] = metadataHash; /// Store a "metadata hash (as a secret) into the "private" storage
+        
+        bytes32[] memory publicInputs = new bytes32[](2);
+        publicInputs[0] = merkleRoot;
+        publicInputs[1] = nullifierHash;
+        require(verifyIPNFTOwnership(proof, publicInputs), "Invalid proof");        
+        nullifiers[nullifierHash] = true;
+        
         nextTokenId++;
     }
 
     /** 
-     * @notice - Verify the proof without revealing metadata
+     * @notice - Check whether or not a given proof is valid without revealing metadata
      */
     function verifyIPNFTOwnership(uint256 tokenId, bytes calldata proof, bytes32 merkleRoot, bytes32 nullifierHash) public view returns (bool isValidProof) {
         require(ownerOf(tokenId) != address(0), "This IPNFT does not exist");
         
-        require(!nullifiers[nullifierHash], "This ZK Proof has been already submitted"); // Prevent from 'double-spending' of a ZK Proof.
-        nullifiers[nullifierHash] = true;
+        require(!nullifiers[nullifierHash], "This ZK Proof has already been submitted"); // Prevent from 'double-spending' of a ZK Proof.
+        //nullifiers[nullifierHash] = true;
 
         bytes32[] memory publicInputs = new bytes32[](2);
         publicInputs[0] = merkleRoot;
