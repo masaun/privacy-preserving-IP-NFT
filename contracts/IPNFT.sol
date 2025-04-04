@@ -3,12 +3,13 @@ pragma solidity ^0.8.0;
 
 import { IPNFTOwnershipVerifier } from "./circuit/IPNFTOwnershipVerifier.sol";
 import { ERC721URIStorage } from "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title - IP NFT contract
  * @notice - NFT can be minted and its ownership can be verified without revealing metadata by verfying a ZK Proof.
  */
-contract IPNFT is ERC721URIStorage {
+contract IPNFT is ERC721URIStorage, Ownable {
     IPNFTOwnershipVerifier public ipNFTOwnershipVerifier;
 
     mapping(uint256 => bytes32) private metadataHashes; // Store a "metadata hash" into the "private" storage.
@@ -16,7 +17,9 @@ contract IPNFT is ERC721URIStorage {
 
     uint256 private nextTokenId = 1;
 
-    constructor() ERC721("IP-NFT", "IP-NFT") {}
+    constructor(address creator) ERC721("IP-NFT", "IP-NFT") {
+        transferOwnership(creator); /// @dev - Transfer the ownership of this IPNFT contract to a given creator, who is the caller of the IPNFTFactory#createNewIPNFT() function.
+    }
 
     /**
      * @notice - Mint a new IP-NFT
