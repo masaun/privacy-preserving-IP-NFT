@@ -45,7 +45,7 @@ contract VerifyScript is Script {
         correctPublicInputs[0] = merkleRoot;
         correctPublicInputs[1] = nullifierHash;
 
-        bool isValidProof = ipNFTOwnershipVerifier.verifyIPNFTOwnership(proofBytes, correctPublicInputs);
+        bool isValidProof = ipNFTOwnershipVerifier.verifyIPNFTOwnershipProof(proofBytes, correctPublicInputs);
         return isValidProof;
     }
 

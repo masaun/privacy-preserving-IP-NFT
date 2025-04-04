@@ -33,7 +33,7 @@ contract IPNFT is ERC721URIStorage {
         bytes32[] memory publicInputs = new bytes32[](2);
         publicInputs[0] = merkleRoot;
         publicInputs[1] = nullifierHash;
-        require(verifyIPNFTOwnership(proof, publicInputs), "Invalid proof");        
+        require(verifyIPNFTOwnershipProof(proof, publicInputs), "Invalid proof");        
         nullifiers[nullifierHash] = true;
         
         nextTokenId++;
@@ -42,7 +42,7 @@ contract IPNFT is ERC721URIStorage {
     /** 
      * @notice - Check whether or not a given proof is valid without revealing metadata
      */
-    function verifyIPNFTOwnership(uint256 tokenId, bytes calldata proof, bytes32 merkleRoot, bytes32 nullifierHash) public view returns (bool isValidProof) {
+    function verifyIPNFTOwnershipProof(uint256 tokenId, bytes calldata proof, bytes32 merkleRoot, bytes32 nullifierHash) public view returns (bool isValidProof) {
         require(ownerOf(tokenId) != address(0), "This IPNFT does not exist");
         
         require(!nullifiers[nullifierHash], "This ZK Proof has already been submitted"); // Prevent from 'double-spending' of a ZK Proof.
@@ -51,6 +51,6 @@ contract IPNFT is ERC721URIStorage {
         bytes32[] memory publicInputs = new bytes32[](2);
         publicInputs[0] = merkleRoot;
         publicInputs[1] = nullifierHash;
-        return ipNFTOwnershipVerifier.verifyIPNFTOwnership(proof, publicInputs); // If "False", this proof is invalid
+        return ipNFTOwnershipVerifier.verifyIPNFTOwnershipProof(proof, publicInputs); // If "False", this proof is invalid
     }
 }
