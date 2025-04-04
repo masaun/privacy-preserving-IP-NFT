@@ -9,7 +9,7 @@ import { IPNFT } from "./IPNFT.sol";
 contract IPNFTFactory {
     IPNFT public ipNFT;
 
-    mapping(address => address) public ownerOfIPNFTs;
+    mapping(address => address) public ownerOfIPNFTs; /// @dev - Deployer of a IPNFT contract.
 
     constructor() {}
 
