@@ -8,7 +8,7 @@ expected_nullifier = ""    # @dev - Should be a Poseidon2 Hash
 [ip_nft_data]
 nft_owner = ""
 nft_token_id = ""
-metadata_cid_hash = ""
+nft_metadata_hash = ""
 
 # root: pub Field, // @dev - Merkle Root
 # hash_path: [Field; 2],
@@ -19,5 +19,5 @@ metadata_cid_hash = ""
 # pub struct IPNftData {
 #     nft_owner: Field,
 #     nft_token_id: Field,
-#     metadata_cid_hash: Field  // IPFS CID for the metadata of NFT, which is generated when uploading to IPFS.
+#     nft_metadata_hash: Field  // IPFS CID for the metadata of NFT, which is generated when uploading to IPFS.
 # }
