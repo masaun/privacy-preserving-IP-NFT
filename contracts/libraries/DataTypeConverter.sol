@@ -1,11 +1,27 @@
 pragma solidity ^0.8.17;
 
+import { Strings } from "@openzeppelin/contracts/utils/Strings.sol";
+
 import "forge-std/console.sol";
 
 /**
  * @title DataTypeConverter library
  */
 library DataTypeConverter {
+
+    /// @notice - Convert string to hash (sha256)
+    function stringToHash(string memory _message) public view returns (bytes32 _messageHash) {
+        bytes memory _messageBytes = abi.encodePacked(_message);
+        bytes32 messageHash = sha256(_messageBytes);
+        return messageHash;
+    }
+
+    /// @notice - Convert uint32 to hash (sha256)
+    function uint32ToHash(uint32 _message) public view returns (bytes32 _messageHash) {
+        bytes memory _messageBytes = abi.encodePacked(Strings.toString(_message));
+        bytes32 messageHash = sha256(_messageBytes);
+        return messageHash;
+    }
 
     /// @notice - Convert bytes to bytes32
     function bytesToBytes32(bytes memory data) internal pure returns (bytes32 result) {
