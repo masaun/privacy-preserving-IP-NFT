@@ -47,9 +47,18 @@ mod tests {
         println("The test of the test_nft_metadata_verifier()) has been successful");
 
 
-        // Test
-        //let _field = std::hash::hash_to_field([nullifier]);
-        //println(_field);
+        // Test - Convert IPFS CID (sha256) -> bytes -> Field
+        let metadata_cid_1: str<46> = "QmYwAPJzv5CZsnAzt8auVZRn5W4mBkpLsD4HaBFN6r5y6F";
+        let metadata_cid_2: str<46> = "QmT78zSuBmuS4z925W1XycoGEErPzHcYjzvAQLCNs5fLhn";
+        let metadata_cid_1_bytes: [u8; 46] = metadata_cid_1.as_bytes();
+        let metadata_cid_2_bytes: [u8; 46] = metadata_cid_2.as_bytes();
+        println(metadata_cid_1); // [Log]: QmYwAPJzv5CZsnAzt8auVZRn5W4mBkpLsD4HaBFN6r5y6F
+        println(metadata_cid_2); // [Log]: QmT78zSuBmuS4z925W1XycoGEErPzHcYjzvAQLCNs5fLhn
+
+        let metadata_cid_1_field = Field::from_be_bytes::<46>(metadata_cid_1_bytes);
+        let metadata_cid_2_field = Field::from_be_bytes::<46>(metadata_cid_2_bytes);
+        println(metadata_cid_1_field); // [Log]: 0x2182f80240dbbfd8b3316c247d0ea667122dfc185af9cf934aeb9ec6dc2e9b28
+        println(metadata_cid_2_field); // [Log]: 0x2cdf90be3235c6bf5def83da7f43b6ff87c0921a030d25bdba939747953d2978
     }
 
 }
