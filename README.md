@@ -49,7 +49,7 @@ sh ./test/edu-chain-testnet/runningScript_Verify_onEDUChainTestnet.sh
 
 - Run the `IPNFT.t.sol` on the Local Network
 ```bash
- sh ./test/runningTest_IPNFT.sh
+sh ./test/runningTest_IPNFT.sh
 ```
 
 

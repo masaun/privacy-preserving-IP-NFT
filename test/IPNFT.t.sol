@@ -11,7 +11,7 @@ import { NoirHelper } from "foundry-noir-helper/NoirHelper.sol";
 
 contract IPNFTTest is Test {
     IPNFTFactory public ipNFTFactory;
-    IPNFT public ipNFT;
+    //IPNFT public ipNFT;
     NoirHelper public noirHelper;
 
     function setUp() public {
@@ -20,7 +20,8 @@ contract IPNFTTest is Test {
     }
 
     function test_createNewIPNFT() public {
-        ipNFT = ipNFTFactory.createNewIPNFT();
+        IPNFT ipNFT = ipNFTFactory.createNewIPNFT();
+        console.log(address(ipNFT));            // [Log]: 0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496
         assertEq(ipNFT.owner(), address(this)); // Verify the owner is set correctly
     }
 
@@ -28,6 +29,12 @@ contract IPNFTTest is Test {
      * @notice - Mint a new IP-NFT
      */
     function test_mintIPNFT() public {
+        /// @dev - Deploy a new IPNFT contrac
+        IPNFT ipNFT = ipNFTFactory.createNewIPNFT();
+        console.log(address(ipNFT));            // [Log]: 0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496
+        assertEq(ipNFT.owner(), address(this)); // Verify the owner is set correctly
+
+        /// @dev - Generate a proof /w public inputs
         string memory metadataURI = "ipfs://QmXyZ..."; // Replace with actual IPFS URI
         bytes32 metadataHash = 0x1efa9d6bb4dfdf86063cc77efdec90eb9262079230f1898049efad264835b6c8; // Replace with actual metadata hash
 
@@ -37,6 +44,7 @@ contract IPNFTTest is Test {
         merkleRoot = publicInputs[0];
         nullifierHash = publicInputs[1];
 
+        /// @dev - Mint a new IP-NFT
         uint256 tokenId = ipNFT.mintIPNFT(metadataURI, metadataHash, proof, merkleRoot, nullifierHash);
     }
 

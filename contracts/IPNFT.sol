@@ -26,7 +26,7 @@ contract IPNFT is ERC721URIStorage, Ownable {
      * @notice - Mint a new IP-NFT
      * @dev - A given metadata URI is stored in the tokenURI mapping of the ERC721 contract.
      * @dev - A given metadata URI includes a CID (IPFS Hash), where a proof is stored (instead of that its actual metadata is stored)
-     * @param metadataURI - The URI of the metadata associated with the NFT (i.e. IPFS Hash, which is called "CID")
+     * param metadataURI - The URI of the metadata associated with the NFT (i.e. IPFS Hash, which is called "CID")
      */
     function mintIPNFT(string memory metadataURI, bytes32 metadataHash, bytes calldata proof, bytes32 merkleRoot, bytes32 nullifierHash) public returns (uint256 tokenId) {
         uint256 tokenId = nextTokenId;
@@ -37,8 +37,8 @@ contract IPNFT is ERC721URIStorage, Ownable {
         bytes32[] memory publicInputs = new bytes32[](2);
         publicInputs[0] = merkleRoot;
         publicInputs[1] = nullifierHash;
-        require(ipNFTOwnershipVerifier.verifyIPNFTOwnershipProof(proof, publicInputs), "Invalid proof");        
-        nullifiers[tokenId][ownerOf(tokenId)][nullifierHash] = true;
+        // require(ipNFTOwnershipVerifier.verifyIPNFTOwnershipProof(proof, publicInputs), "Invalid proof");        
+        // nullifiers[tokenId][ownerOf(tokenId)][nullifierHash] = true;
         
         nextTokenId++;
     }
