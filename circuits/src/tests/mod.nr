@@ -46,8 +46,14 @@ mod tests {
 
         println("The test of the test_nft_metadata_verifier()) has been successful");
 
-
         // Test - Convert IPFS CID (sha256) -> bytes -> Field -> Poseidon2 Hash
+        test_convert_nft_metadata_cid_to_poseidon_hash();
+    }
+
+    /** 
+     * @notice - Test: Convert IPFS CID (sha256) -> bytes -> Field -> Poseidon2 Hash
+     */
+    fn test_convert_nft_metadata_cid_to_poseidon_hash() {
         let metadata_cid_1: str<46> = "QmYwAPJzv5CZsnAzt8auVZRn5W4mBkpLsD4HaBFN6r5y6F";
         let metadata_cid_2: str<46> = "QmT78zSuBmuS4z925W1XycoGEErPzHcYjzvAQLCNs5fLhn";
         let metadata_cid_1_bytes: [u8; 46] = metadata_cid_1.as_bytes();
@@ -67,5 +73,4 @@ mod tests {
         println(metadata_cid_hash_1); // [Log]: 0x0c863c512eaa011ffa5d0f8b8cfe26c5dfa6c0e102a4594a3e40af8f68d86dd0
         println(metadata_cid_hash_2); // [Log]: 0x214d21e2af69ee717d49475734429bce912b83c4da4d0e4e2f3dc0b044e2906b
     }
-
 }
