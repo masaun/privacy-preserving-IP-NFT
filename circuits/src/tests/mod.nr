@@ -47,7 +47,7 @@ mod tests {
         println("The test of the test_nft_metadata_verifier()) has been successful");
 
 
-        // Test - Convert IPFS CID (sha256) -> bytes -> Field
+        // Test - Convert IPFS CID (sha256) -> bytes -> Field -> Poseidon2 Hash
         let metadata_cid_1: str<46> = "QmYwAPJzv5CZsnAzt8auVZRn5W4mBkpLsD4HaBFN6r5y6F";
         let metadata_cid_2: str<46> = "QmT78zSuBmuS4z925W1XycoGEErPzHcYjzvAQLCNs5fLhn";
         let metadata_cid_1_bytes: [u8; 46] = metadata_cid_1.as_bytes();
@@ -59,6 +59,13 @@ mod tests {
         let metadata_cid_2_field = Field::from_be_bytes::<46>(metadata_cid_2_bytes);
         println(metadata_cid_1_field); // [Log]: 0x2182f80240dbbfd8b3316c247d0ea667122dfc185af9cf934aeb9ec6dc2e9b28
         println(metadata_cid_2_field); // [Log]: 0x2cdf90be3235c6bf5def83da7f43b6ff87c0921a030d25bdba939747953d2978
+
+        let inputs_for_metadata_cid_hash_1: [Field; 1] = [metadata_cid_1_field];
+        let inputs_for_metadata_cid_hash_2: [Field; 1] = [metadata_cid_2_field];
+        let metadata_cid_hash_1 = poseidon2::Poseidon2::hash(inputs_for_metadata_cid_hash_1, inputs_for_metadata_cid_hash_1.len());
+        let metadata_cid_hash_2 = poseidon2::Poseidon2::hash(inputs_for_metadata_cid_hash_2, inputs_for_metadata_cid_hash_2.len());
+        println(metadata_cid_hash_1); // [Log]: 0x0c863c512eaa011ffa5d0f8b8cfe26c5dfa6c0e102a4594a3e40af8f68d86dd0
+        println(metadata_cid_hash_2); // [Log]: 0x214d21e2af69ee717d49475734429bce912b83c4da4d0e4e2f3dc0b044e2906b
     }
 
 }
