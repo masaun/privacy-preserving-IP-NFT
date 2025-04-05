@@ -20,7 +20,7 @@ fn main(
     let note_commitment = poseidon2::Poseidon2::hash(inputs_for_note_commitment, inputs_for_note_commitment.len());
 
     //let inputs_for_nullifier: [Field; 1] = [ip_nft_data.nft_token_id];
-    let inputs_for_nullifier: [Field; 5] = [root, secret, ip_nft_data.nft_owner, ip_nft_data.nft_token_id, ip_nft_data.metadata_cid_hash];
+    let inputs_for_nullifier: [Field; 5] = [root, secret, ip_nft_data.nft_owner, ip_nft_data.nft_token_id, ip_nft_data.nft_metadata_hash];
     let nullifier = poseidon2::Poseidon2::hash(inputs_for_nullifier, inputs_for_nullifier.len());
     
     // Constraint: nullifier (hash) == expected_nullifier (hash)

@@ -23,12 +23,12 @@ function getInputData() {
   const secret = BigInt(1);
   const nft_owner = BigInt(0xC6093Fd9cc143F9f058938868b2df2daF9A91d28);
   const nft_token_id = BigInt(1);
-  const metadata_cid_hash = BigInt(0x1efa9d6bb4dfdf86063cc77efdec90eb9262079230f1898049efad264835b6c8);
+  const nft_metadata_hashh = BigInt(0x1efa9d6bb4dfdf86063cc77efdec90eb9262079230f1898049efad264835b6c8);
 
   console.log(`nft_token_id (in BigInt): ${nft_token_id}`);
 
   //const inputs_for_nullifier = [nft_token_id];
-  const inputs_for_nullifier = [root, secret, nft_owner, nft_token_id, metadata_cid_hash];
+  const inputs_for_nullifier = [root, secret, nft_owner, nft_token_id, nft_metadata_hashh];
   return inputs_for_nullifier;
 }
 
