@@ -1,9 +1,9 @@
-use std::hash::poseidon2;
 mod tests;      // tests/mod.nr
 mod data_types; // data_types.nr
+mod converters; // converters.nr -> converters/convert_cid_to_poseidon_hash.nr -> convert_nft_metadata_cid_to_poseidon_hash()
 
+use std::hash::poseidon2;
 use data_types::IPNftData; // @dev - IPNftData struct
-
 
 
 fn main(
@@ -25,6 +25,12 @@ fn main(
     
     // Constraint: nullifier (hash) == expected_nullifier (hash)
     assert(nullifier == expected_nullifier);
+
+    // Convert a IPFS CID (sha256) -> bytes -> Field -> Poseidon2 Hash
+    let metadata_cid: str<46> = "QmYwAPJzv5CZsnAzt8auVZRn5W4mBkpLsD4HaBFN6r5y6F";
+    let metadata_cid_hash: Field = converters::convert_cid_to_poseidon_hash::convert_nft_metadata_cid_to_poseidon_hash(metadata_cid);
+    println(metadata_cid_hash); // [Log]:
+
 
     // [TODO]: Constraint - [NOTE]: The std::merkle::compute_merkle_root() can be used with only a "Pedersen" hash.
     //let check_root = std::merkle::compute_merkle_root(note_commitment, index, hash_path);
