@@ -1,5 +1,7 @@
 pragma solidity ^0.8.17;
 
+import { UltraVerifier } from "../contracts/circuit/ultra-verifier/plonk_vk.sol";
+import { IPNFTOwnershipVerifier } from "../contracts/circuit/IPNFTOwnershipVerifier.sol";
 import { IPNFTFactory } from "../contracts/IPNFTFactory.sol";
 import { IPNFT } from "../contracts/IPNFT.sol";
 
@@ -10,13 +12,17 @@ import { NoirHelper } from "foundry-noir-helper/NoirHelper.sol";
 
 
 contract IPNFTTest is Test {
+    UltraVerifier public verifier;
+    IPNFTOwnershipVerifier public ipNFTOwnershipVerifier;
     IPNFTFactory public ipNFTFactory;
     //IPNFT public ipNFT;
     NoirHelper public noirHelper;
 
     function setUp() public {
         noirHelper = new NoirHelper();
-        ipNFTFactory = new IPNFTFactory(); /// @dev - Deploy the IPNFTFactory contract
+        verifier = new UltraVerifier();
+        ipNFTOwnershipVerifier = new IPNFTOwnershipVerifier(verifier);
+        ipNFTFactory = new IPNFTFactory(ipNFTOwnershipVerifier); /// @dev - Deploy the IPNFTFactory contract
     }
 
     function test_createNewIPNFT() public {

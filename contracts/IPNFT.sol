@@ -6,6 +6,9 @@ import { ERC721 } from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import { ERC721URIStorage } from "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 
+import "forge-std/console.sol";
+
+
 /**
  * @title - IP NFT contract
  * @notice - NFT can be minted and its ownership can be verified without revealing metadata by verfying a ZK Proof.
@@ -18,7 +21,8 @@ contract IPNFT is ERC721URIStorage, Ownable {
 
     uint256 private nextTokenId = 1;
 
-    constructor(address creator) ERC721("IP-NFT", "IP-NFT") Ownable(creator) {
+    constructor(IPNFTOwnershipVerifier _ipNFTOwnershipVerifier, address creator) ERC721("IP-NFT", "IP-NFT") Ownable(creator) {
+        ipNFTOwnershipVerifier = _ipNFTOwnershipVerifier;
         //transferOwnership(creator); /// @dev - Transfer the ownership of this IPNFT contract to a given creator, who is the caller of the IPNFTFactory#createNewIPNFT() function.
     }
 
@@ -29,16 +33,23 @@ contract IPNFT is ERC721URIStorage, Ownable {
      * param metadataURI - The URI of the metadata associated with the NFT (i.e. IPFS Hash, which is called "CID")
      */
     function mintIPNFT(string memory metadataURI, bytes32 metadataHash, bytes calldata proof, bytes32 merkleRoot, bytes32 nullifierHash) public returns (uint256 tokenId) {
+        /// @dev - Mint a new IP-NFT
         uint256 tokenId = nextTokenId;
         _mint(msg.sender, tokenId);
         _setTokenURI(tokenId, metadataURI);     /// @dev - A given metadata URI includes a CID (IPFS Hash), where a proof is stored (instead of that its actual metadata is stored)
         metadataHashes[tokenId] = metadataHash; /// Store a "metadata hash (as a secret) into the "private" storage
-        
+
+        /// @dev - Verify the proof
         bytes32[] memory publicInputs = new bytes32[](2);
         publicInputs[0] = merkleRoot;
         publicInputs[1] = nullifierHash;
-        // require(ipNFTOwnershipVerifier.verifyIPNFTOwnershipProof(proof, publicInputs), "Invalid proof");        
-        // nullifiers[tokenId][ownerOf(tokenId)][nullifierHash] = true;
+        bool isValidProof = ipNFTOwnershipVerifier.verifyIPNFTOwnershipProof(proof, publicInputs);
+        require(isValidProof, "Invalid proof");      
+        //require(ipNFTOwnershipVerifier.verifyIPNFTOwnershipProof(proof, publicInputs), "Invalid proof");  
+        console.logBool(isValidProof); // [Log]: true
+
+        /// @dev - Save a nullifier to prevent double-spending of a proof.
+        nullifiers[tokenId][ownerOf(tokenId)][nullifierHash] = true;
         
         nextTokenId++;
     }

@@ -1,7 +1,7 @@
 pragma solidity ^0.8.17;
 
-import { IPNFTOwnershipVerifier } from "../contracts/circuit/IPNFTOwnershipVerifier.sol";
 import { UltraVerifier } from "../contracts/circuit/ultra-verifier/plonk_vk.sol";
+import { IPNFTOwnershipVerifier } from "../contracts/circuit/IPNFTOwnershipVerifier.sol";
 //import "../circuits/target/contract.sol";
 import "forge-std/console.sol";
 
