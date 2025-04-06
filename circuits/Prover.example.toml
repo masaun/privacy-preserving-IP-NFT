@@ -9,7 +9,8 @@ expected_nft_metadata_cid_hash = "" # @dev - Should be a Poseidon2 Hash
 [ip_nft_data]
 nft_owner = ""
 nft_token_id = ""
-nft_metadata_hash = ""
+nft_metadata_cid = ""      # @dev - IPFS CID, which is not hashed yet. (i.e. "QmYwAPJzv5CZsnAzt8auVZRn5W4mBkpLsD4HaBFN6r5y6F")
+#nft_metadata_hash = ""
 
 # root: pub Field, // @dev - Merkle Root
 # hash_path: [Field; 2],
