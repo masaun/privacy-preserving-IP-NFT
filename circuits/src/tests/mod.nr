@@ -26,7 +26,7 @@ mod tests {
 
         // Convert a IPFS CID (sha256) -> bytes -> Field -> Poseidon2 Hash
         let nft_metadata_cid: str<46> = "QmYwAPJzv5CZsnAzt8auVZRn5W4mBkpLsD4HaBFN6r5y6F";
-        let expected_nft_metadata_cid_hash: Field = converters::convert_cid_to_poseidon_hash::convert_nft_metadata_cid_to_poseidon_hash(nft_metadata_cid);
+        let expected_nft_metadata_cid_hash: Field = converters::converter_module::convert_nft_metadata_cid_to_poseidon_hash(nft_metadata_cid);
         println(expected_nft_metadata_cid_hash); // [Log]: 0x0c863c512eaa011ffa5d0f8b8cfe26c5dfa6c0e102a4594a3e40af8f68d86dd0
 
         //let nullifier = main(

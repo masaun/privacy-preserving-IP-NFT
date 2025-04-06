@@ -1,1 +1,1 @@
-pub mod convert_cid_to_poseidon_hash; // [Path]: converters/convert_cid_to_poseidon_hash.nr
+pub mod converter_module; // [Path]: converters/converter_module.nr
