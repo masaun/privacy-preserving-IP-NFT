@@ -3,7 +3,7 @@ mod data_types; // data_types.nr
 mod converters; // converters.nr -> converters/convert_cid_to_poseidon_hash.nr -> convert_nft_metadata_cid_to_poseidon_hash()
 
 use std::hash::poseidon2;
-use data_types::IPNftData; // @dev - IPNftData struct
+use data_types::{ IPNftData, RevealedData }; // @dev - IPNftData struct
 
 
 fn main(
@@ -14,8 +14,8 @@ fn main(
     expected_nullifier: Field,
     expected_nft_metadata_cid_hash: Field,
     ip_nft_data: IPNftData
-) -> pub Field {
-//) -> (pub Field, pub Field) {
+//) -> pub Field {
+) -> pub RevealedData {
     println(expected_nullifier); // [Log]: 0x168758332d5b3e2d13be8048c8011b454590e06c44bce7f702f09103eef5a373
 
     let inputs_for_note_commitment: [Field; 1] = [secret];
@@ -40,6 +40,10 @@ fn main(
     //let check_root = std::merkle::compute_merkle_root(note_commitment, index, hash_path);
     //assert(root == check_root);
 
-    nullifier
+    //nullifier
     //(nullifier, nft_metadata_cid_hash)
+    RevealedData {
+        nullifier,
+        nft_metadata_cid_hash,
+    }
 }

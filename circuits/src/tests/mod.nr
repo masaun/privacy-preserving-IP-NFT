@@ -2,7 +2,7 @@ mod test_inputs; // test_inputs.nr
 
 mod tests {
     use crate::main;                   // src/main.nr
-    use crate::data_types::IPNftData;  // src/data_types.nr
+    use crate::data_types::{ IPNftData, RevealedData };  // src/data_types.nr
     use crate::converters;             // src/converters.nr -> converters/convert_cid_to_poseidon_hash.nr -> convert_nft_metadata_cid_to_poseidon_hash()
     use std::hash::poseidon2;
 
@@ -29,8 +29,8 @@ mod tests {
         let expected_nft_metadata_cid_hash: Field = converters::convert_cid_to_poseidon_hash::convert_nft_metadata_cid_to_poseidon_hash(nft_metadata_cid);
         println(expected_nft_metadata_cid_hash); // [Log]: 0x0c863c512eaa011ffa5d0f8b8cfe26c5dfa6c0e102a4594a3e40af8f68d86dd0
 
-        let nullifier = main(
-        //let (nullifier, nft_metadata_cid_hash) = main(
+        //let nullifier = main(
+        let revealed_data: RevealedData = main(
             root,
             hash_path,
             index,
@@ -39,7 +39,9 @@ mod tests {
             expected_nft_metadata_cid_hash, 
             ip_nft_data
         );
-        println(nullifier); // [Log]: 0x168758332d5b3e2d13be8048c8011b454590e06c44bce7f702f09103eef5a373
+        println(revealed_data.nullifier); // [Log]: 
+        println(revealed_data.nft_metadata_cid_hash); // [Log]: 
+        //println(nullifier); // [Log]: 0x168758332d5b3e2d13be8048c8011b454590e06c44bce7f702f09103eef5a373
         //println(nft_metadata_cid_hash); // [Log]: 0x0c863c512eaa011ffa5d0f8b8cfe26c5dfa6c0e102a4594a3e40af8f68d86dd0
 
         let inputs_for_note_commitment: [Field; 1] = [secret];
@@ -51,7 +53,7 @@ mod tests {
         println(_nullifier); // [Log]: 0x168758332d5b3e2d13be8048c8011b454590e06c44bce7f702f09103eef5a373
 
         // Constraint check
-        assert(nullifier == _nullifier, "Invalid nullifier");
+        assert(revealed_data.nullifier == _nullifier, "Invalid nullifier");
 
         println("The test of the test_nft_metadata_verifier()) has been successful");
 
