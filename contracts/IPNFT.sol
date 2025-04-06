@@ -32,12 +32,13 @@ contract IPNFT is ERC721URIStorage, Ownable {
      * @dev - A given metadata URI includes a CID (IPFS Hash), where a proof is stored (instead of that its actual metadata is stored)
      * param metadataURI - The URI of the metadata associated with the NFT (i.e. IPFS Hash, which is called "CID")
      */
-    function mintIPNFT(string memory metadataURI, bytes32 metadataHash, bytes calldata proof, bytes32 merkleRoot, bytes32 nullifierHash) public returns (uint256 tokenId) {
+    function mintIPNFT(string memory metadataHash, bytes calldata proof, bytes32 merkleRoot, bytes32 nullifierHash) public returns (uint256 tokenId) {
         /// @dev - Mint a new IP-NFT
         uint256 tokenId = nextTokenId;
         _mint(msg.sender, tokenId);
-        _setTokenURI(tokenId, metadataURI);     /// @dev - A given metadata URI includes a CID (IPFS Hash), where a proof is stored (instead of that its actual metadata is stored)
-        metadataHashes[tokenId] = metadataHash; /// Store a "metadata hash (as a secret) into the "private" storage
+        _setTokenURI(tokenId, metadataHash);    /// @dev - Store a given metadataHash, which is a hashed-metadataURI, instead of storing a given metadataURI directly.
+        //_setTokenURI(tokenId, metadataURI);   /// @dev - A given metadata URI includes a CID (IPFS Hash), where a proof is stored (instead of that its actual metadata is stored)
+        //metadataHashes[tokenId] = metadataHash; /// Store a "metadata hash (as a secret) into the "private" storage
 
         /// @dev - Verify the proof
         bytes32[] memory publicInputs = new bytes32[](2);
