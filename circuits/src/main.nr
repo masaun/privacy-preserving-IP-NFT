@@ -12,8 +12,10 @@ fn main(
     index: Field,
     secret: Field,   // @dev - A hidden metadata hash (private)
     expected_nullifier: Field,
+    expected_nft_metadata_cid_hash: Field,
     ip_nft_data: IPNftData
 ) -> pub Field {
+//) -> (pub Field, pub Field) {
     println(expected_nullifier); // [Log]: 0x168758332d5b3e2d13be8048c8011b454590e06c44bce7f702f09103eef5a373
 
     let inputs_for_note_commitment: [Field; 1] = [secret];
@@ -27,14 +29,17 @@ fn main(
     assert(nullifier == expected_nullifier);
 
     // Convert a IPFS CID (sha256) -> bytes -> Field -> Poseidon2 Hash
-    let metadata_cid: str<46> = "QmYwAPJzv5CZsnAzt8auVZRn5W4mBkpLsD4HaBFN6r5y6F";
-    let metadata_cid_hash: Field = converters::convert_cid_to_poseidon_hash::convert_nft_metadata_cid_to_poseidon_hash(metadata_cid);
-    println(metadata_cid_hash); // [Log]:
+    let nft_metadata_cid: str<46> = "QmYwAPJzv5CZsnAzt8auVZRn5W4mBkpLsD4HaBFN6r5y6F";
+    let nft_metadata_cid_hash: Field = converters::convert_cid_to_poseidon_hash::convert_nft_metadata_cid_to_poseidon_hash(nft_metadata_cid);
+    println(nft_metadata_cid_hash); // [Log]: 0x0c863c512eaa011ffa5d0f8b8cfe26c5dfa6c0e102a4594a3e40af8f68d86dd0
 
+    // Constraint: nft_metadata_cid_hash == expected_nft_metadata_hash
+    assert(nft_metadata_cid_hash == expected_nft_metadata_cid_hash);
 
     // [TODO]: Constraint - [NOTE]: The std::merkle::compute_merkle_root() can be used with only a "Pedersen" hash.
     //let check_root = std::merkle::compute_merkle_root(note_commitment, index, hash_path);
     //assert(root == check_root);
 
     nullifier
+    //(nullifier, nft_metadata_cid_hash)
 }

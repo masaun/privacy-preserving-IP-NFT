@@ -4,6 +4,7 @@ hash_path = ["", ""]
 index = ""
 secret = ""                # @dev - A hidden metadata hash (private)
 expected_nullifier = ""    # @dev - Should be a Poseidon2 Hash
+expected_nft_metadata_cid_hash = "" # @dev - Should be a Poseidon2 Hash
 
 [ip_nft_data]
 nft_owner = ""

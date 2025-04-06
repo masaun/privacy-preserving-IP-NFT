@@ -3,6 +3,7 @@ mod test_inputs; // test_inputs.nr
 mod tests {
     use crate::main;                   // src/main.nr
     use crate::data_types::IPNftData;  // src/data_types.nr
+    use crate::converters;             // src/converters.nr -> converters/convert_cid_to_poseidon_hash.nr -> convert_nft_metadata_cid_to_poseidon_hash()
     use std::hash::poseidon2;
 
     #[test]
@@ -23,15 +24,23 @@ mod tests {
         let expected_nullifier = poseidon2::Poseidon2::hash([root, secret, ip_nft_data.nft_owner, ip_nft_data.nft_token_id, ip_nft_data.nft_metadata_hash], 5);
         println(expected_nullifier); // [Log]: 0x168758332d5b3e2d13be8048c8011b454590e06c44bce7f702f09103eef5a373
 
+        // Convert a IPFS CID (sha256) -> bytes -> Field -> Poseidon2 Hash
+        let nft_metadata_cid: str<46> = "QmYwAPJzv5CZsnAzt8auVZRn5W4mBkpLsD4HaBFN6r5y6F";
+        let expected_nft_metadata_cid_hash: Field = converters::convert_cid_to_poseidon_hash::convert_nft_metadata_cid_to_poseidon_hash(nft_metadata_cid);
+        println(expected_nft_metadata_cid_hash); // [Log]: 0x0c863c512eaa011ffa5d0f8b8cfe26c5dfa6c0e102a4594a3e40af8f68d86dd0
+
         let nullifier = main(
+        //let (nullifier, nft_metadata_cid_hash) = main(
             root,
             hash_path,
             index,
             secret,
             expected_nullifier,
+            expected_nft_metadata_cid_hash, 
             ip_nft_data
         );
         println(nullifier); // [Log]: 0x168758332d5b3e2d13be8048c8011b454590e06c44bce7f702f09103eef5a373
+        //println(nft_metadata_cid_hash); // [Log]: 0x0c863c512eaa011ffa5d0f8b8cfe26c5dfa6c0e102a4594a3e40af8f68d86dd0
 
         let inputs_for_note_commitment: [Field; 1] = [secret];
         let note_commitment = poseidon2::Poseidon2::hash(inputs_for_note_commitment, inputs_for_note_commitment.len());
