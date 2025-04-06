@@ -23,12 +23,14 @@ function getInputData() {
   const secret = BigInt(1);
   const nft_owner = BigInt(0xC6093Fd9cc143F9f058938868b2df2daF9A91d28);
   const nft_token_id = BigInt(1);
-  const nft_metadata_hashh = BigInt(0x1efa9d6bb4dfdf86063cc77efdec90eb9262079230f1898049efad264835b6c8);
+  const nft_metadata_cid = "QmYwAPJzv5CZsnAzt8auVZRn5W4mBkpLsD4HaBFN6r5y6F";
+  //const nft_metadata_hash = BigInt(0x1efa9d6bb4dfdf86063cc77efdec90eb9262079230f1898049efad264835b6c8);
 
-  console.log(`nft_token_id (in BigInt): ${nft_token_id}`);
+  console.log(`nft_metadata_cid: ${nft_metadata_cid}`);
+  const expected_nft_metadata_cid_hash = BigInt(0x0c863c512eaa011ffa5d0f8b8cfe26c5dfa6c0e102a4594a3e40af8f68d86dd0); // [NOTE]: This is the Poseidon Hash, which is converted from the "nft_metadata_cid" (CID)
 
   //const inputs_for_nullifier = [nft_token_id];
-  const inputs_for_nullifier = [root, secret, nft_owner, nft_token_id, nft_metadata_hashh];
+  const inputs_for_nullifier = [root, secret, nft_owner, nft_token_id, expected_nft_metadata_cid_hash];
   return inputs_for_nullifier;
 }
 
@@ -44,9 +46,6 @@ function exportJSON(data: object, filename: string = "output.json") {
  * @notice - The main function
  */
 function main() {
-  // const data1 = 100;
-  // const data2 = 200;
-  // const data3 = 300;
   const hash = computePoseidon2Hash(); // Await the promise
   console.log(`hash (Poseidon2 hash): ${ hash }`); // Returns a single bigint hash value -> [Log]: 16068223842875184682212183064520144190817798559788034419026031423767658184152
   console.log(`nullifier: ${ hash }`);

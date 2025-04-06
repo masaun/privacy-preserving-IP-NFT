@@ -58,15 +58,17 @@ async function getCircuit(name: string): Promise<CompiledCircuit> {
       ],
       index: 0,
       secret: 1,
-      expected_nullifier: "0x1265c921cb8e0dc6c91f70ae08b14352b8f10451aee7582b9ed44abea8d4123c",
+      expected_nullifier: "0x26df0d347e961cb94e1cc6d2ad8558696de8c1964b30e26f2ec8b926cbbbf862",
       //expected_nullifier: "10190015755989328289879378487807721086446093622177241109507523918927702106995",
       //expected_nullifier: "0x168758332d5b3e2d13be8048c8011b454590e06c44bce7f702f09103eef5a373"
-      
+      expected_nft_metadata_cid_hash: "0x0c863c512eaa011ffa5d0f8b8cfe26c5dfa6c0e102a4594a3e40af8f68d86dd0",
+
       //[ip_nft_data]
       ip_nft_data: {
         nft_owner: "0xC6093Fd9cc143F9f058938868b2df2daF9A91d28",
         nft_token_id: "1",
-        nft_metadata_hashh: "0x1efa9d6bb4dfdf86063cc77efdec90eb9262079230f1898049efad264835b6c8"
+        nft_metadata_cid: "QmYwAPJzv5CZsnAzt8auVZRn5W4mBkpLsD4HaBFN6r5y6F"
+        //nft_metadata_hash: "0x1efa9d6bb4dfdf86063cc77efdec90eb9262079230f1898049efad264835b6c8"
       }
     }
   
