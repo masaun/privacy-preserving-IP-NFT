@@ -35,15 +35,17 @@ contract IPNFTOwnershipVerifierTest is Test {
                   .withInput("index", bytes32(uint256(0)))
                   .withInput("secret", bytes32(uint256(1)))                   
                   .withInput("expected_nullifier", bytes32(uint256(0x1265c921cb8e0dc6c91f70ae08b14352b8f10451aee7582b9ed44abea8d4123c)))
+                  .withInput("expected_nft_metadata_cid_hash", bytes32(uint256(0x0c863c512eaa011ffa5d0f8b8cfe26c5dfa6c0e102a4594a3e40af8f68d86dd0)))
                   .withStruct("ip_nft_data")
                   .withStructInput("nft_owner", bytes32(uint256(uint160(0xC6093Fd9cc143F9f058938868b2df2daF9A91d28)))) // [NOTE]: An input data of 'Address' type must be cast to uint160 first. Then, it should be cast to uint256 and bytes32.
                   .withStructInput("nft_token_id", bytes32(uint256(1)))
-                  .withStructInput("nft_metadata_hash", bytes32(uint256(0x1efa9d6bb4dfdf86063cc77efdec90eb9262079230f1898049efad264835b6c8)));
+                  .withStructInput("nft_metadata_cid", string("QmYwAPJzv5CZsnAzt8auVZRn5W4mBkpLsD4HaBFN6r5y6F"));
 
         /// @dev - Generate the proof
-        (bytes32[] memory publicInputs, bytes memory proof) = noirHelper.generateProof("test_verifyProof", 2);
-        console.logBytes32(publicInputs[0]); // [Log]: 0x215597bacd9c7e977dfc170f320074155de974be494579d2586e5b268fa3b629
-        console.logBytes32(publicInputs[1]); // [Log]: 0x1265c921cb8e0dc6c91f70ae08b14352b8f10451aee7582b9ed44abea8d4123c
+        (bytes32[] memory publicInputs, bytes memory proof) = noirHelper.generateProof("test_verifyProof", 3);
+        //(bytes32[] memory publicInputs, bytes memory proof) = noirHelper.generateProof("test_verifyProof", 2);
+        //console.logBytes32(publicInputs[0]); // [Log]: 0x215597bacd9c7e977dfc170f320074155de974be494579d2586e5b268fa3b629
+        //console.logBytes32(publicInputs[1]); // [Log]: 0x1265c921cb8e0dc6c91f70ae08b14352b8f10451aee7582b9ed44abea8d4123c
 
         /// @dev - Verify the proof
         ipNFTOwnershipVerifier.verifyIPNFTOwnershipProof(proof, publicInputs);
@@ -63,17 +65,18 @@ contract IPNFTOwnershipVerifierTest is Test {
         noirHelper.withInput("root", bytes32(uint256(0x215597bacd9c7e977dfc170f320074155de974be494579d2586e5b268fa3b629)))
                   .withInput("hash_path", hash_path_bytes32)
                   .withInput("index", bytes32(uint256(0)))
-                  .withInput("secret",bytes32(uint256(1)))                   
+                  .withInput("secret", bytes32(uint256(1)))                   
                   .withInput("expected_nullifier", bytes32(uint256(0x1265c921cb8e0dc6c91f70ae08b14352b8f10451aee7582b9ed44abea8d4123c)))
+                  .withInput("expected_nft_metadata_cid_hash", bytes32(uint256(0x0c863c512eaa011ffa5d0f8b8cfe26c5dfa6c0e102a4594a3e40af8f68d86dd0)))
                   .withStruct("ip_nft_data")
                   .withStructInput("nft_owner", bytes32(uint256(uint160(0xC6093Fd9cc143F9f058938868b2df2daF9A91d28)))) // [NOTE]: An input data of 'Address' type must be cast to uint160 first. Then, it should be cast to uint256 and bytes32.
                   .withStructInput("nft_token_id", bytes32(uint256(1)))
-                  .withStructInput("nft_metadata_hash", bytes32(uint256(0x1efa9d6bb4dfdf86063cc77efdec90eb9262079230f1898049efad264835b6c8)));
+                  .withStructInput("nft_metadata_cid", string('QmYwAPJzv5CZsnAzt8auVZRn5W4mBkpLsD4HaBFN6r5y6F'));
 
         /// @dev - Generate the proof
-        (bytes32[] memory publicInputs, bytes memory proof) = noirHelper.generateProof("test_wrongProof", 2);
-        console.logBytes32(publicInputs[0]); // [Log]: 0x215597bacd9c7e977dfc170f320074155de974be494579d2586e5b268fa3b629
-        console.logBytes32(publicInputs[1]); // [Log]: 0x1265c921cb8e0dc6c91f70ae08b14352b8f10451aee7582b9ed44abea8d4123c
+        (bytes32[] memory publicInputs, bytes memory proof) = noirHelper.generateProof("test_wrongProof", 3);
+        //console.logBytes32(publicInputs[0]); // [Log]: 0x215597bacd9c7e977dfc170f320074155de974be494579d2586e5b268fa3b629
+        //console.logBytes32(publicInputs[1]); // [Log]: 0x1265c921cb8e0dc6c91f70ae08b14352b8f10451aee7582b9ed44abea8d4123c
 
         /// @dev - Create a fake public input, which should fail because the public input is wrong
         bytes32[] memory fakePublicInputs = new bytes32[](2);
