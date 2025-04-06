@@ -66,7 +66,8 @@ async function getCircuit(name: string): Promise<CompiledCircuit> {
       ip_nft_data: {
         nft_owner: "0xC6093Fd9cc143F9f058938868b2df2daF9A91d28",
         nft_token_id: "1",
-        nft_metadata_hashh: "0x1efa9d6bb4dfdf86063cc77efdec90eb9262079230f1898049efad264835b6c8"
+        nft_metadata_cid: "QmYwAPJzv5CZsnAzt8auVZRn5W4mBkpLsD4HaBFN6r5y6F"
+        //nft_metadata_hash: "0x1efa9d6bb4dfdf86063cc77efdec90eb9262079230f1898049efad264835b6c8"
       }
     }
   
