@@ -65,6 +65,8 @@ contract IPNFT is ERC721URIStorage, Ownable {
         nullifiers[tokenId][ownerOf(tokenId)][nullifierHash] = true;
         
         nextTokenId++;
+
+        return tokenId;
     }
 
     /** 

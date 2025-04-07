@@ -60,8 +60,8 @@ contract IPNFTTest is Test {
         string memory metadataCidHashString = DataTypeConverter.bytes32ToString(metadataCidHash); // Convert bytes32 to string
         console.logString(metadataCidHashString);  // [Log]: 
 
-        /// @dev - Get a tokenURI of the minted IP-NFT
-        //assertEq(metadataCidHashString, ipNFT.tokenURI(tokenId));
+        /// @dev - Check the tokenURI, which is associated with a given tokenId of IPNFT, is equal to a given string version of metadataCidHash.
+        assertEq(metadataCidHashString, ipNFT.tokenURI(tokenId));
 
         /// @dev - Check before/after converting a given metadataCidHash.
         bytes32 metadataCidHashReversed = DataTypeConverter.stringToBytes32(metadataCidHashString);
