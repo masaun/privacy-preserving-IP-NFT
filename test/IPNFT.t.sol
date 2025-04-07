@@ -42,8 +42,8 @@ contract IPNFTTest is Test {
 
         /// @dev - Generate a proof /w public inputs
         //string memory metadataURI = "ipfs://QmYwAPJzv5CZsnAzt8auVZRn5W4mBkpLsD4HaBFN6r5y6F";       // Replace with actual IPFS URI
-        string memory metadataHash = "0x1efa9d6bb4dfdf86063cc77efdec90eb9262079230f1898049efad264835b6c8";  /// @dev - This is a hashed-metadataURI.
-        //bytes32 metadataHash = 0x1efa9d6bb4dfdf86063cc77efdec90eb9262079230f1898049efad264835b6c8; // Replace with actual metadata hash
+        string memory metadataCidHash = "0x1efa9d6bb4dfdf86063cc77efdec90eb9262079230f1898049efad264835b6c8";  /// @dev - This is a hashed-metadataURI.
+        //bytes32 metadataCidHash = 0x1efa9d6bb4dfdf86063cc77efdec90eb9262079230f1898049efad264835b6c8; // Replace with actual metadata hash
 
         bytes32 merkleRoot;
         bytes32 nullifierHash;
@@ -52,8 +52,8 @@ contract IPNFTTest is Test {
         nullifierHash = publicInputs[1];
 
         /// @dev - Mint a new IP-NFT
-        uint256 tokenId = ipNFT.mintIPNFT(metadataHash, proof, merkleRoot, nullifierHash); /// @dev - Store a given metadataHash, which is a hashed-metadataURI, instead of storing a given metadataURI directly.
-        //uint256 tokenId = ipNFT.mintIPNFT(metadataURI, metadataHash, proof, merkleRoot, nullifierHash);
+        uint256 tokenId = ipNFT.mintIPNFT(metadataCidHash, proof, merkleRoot, nullifierHash); /// @dev - Store a given metadataCidHash, which is a hashed-metadataURI, instead of storing a given metadataURI directly.
+        //uint256 tokenId = ipNFT.mintIPNFT(metadataURI, metadataCidHash, proof, merkleRoot, nullifierHash);
     }
 
     /**
