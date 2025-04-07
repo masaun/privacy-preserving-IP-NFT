@@ -29,27 +29,28 @@ library DataTypeConverter {
         return bytes32(data);
     }
 
-    /// @notice - Convert bytes32 to bytes
-    // function bytes32ToBytes(bytes32 data) public pure returns (bytes memory) {
-    //     uint256 len = 32;
-    //     while (len > 0 && data[len - 1] == 0) {
-    //         len--;
-    //     }
-    //     bytes memory result = new bytes(len);
-    //     for (uint256 i = 0; i < len; i++) {
-    //         result[i] = data[i];
-    //     }
-    //     return result;
-    // }
+    /// @notice - Convert bytes32 to String
+    function bytes32ToString(bytes32 _bytes32) public pure returns (string memory) {
+        uint8 i = 0;
+        while(i < 32 && _bytes32[i] != 0) {
+            i++;
+        }
+        bytes memory bytesArray = new bytes(i);
+        for (uint8 j = 0; j < i; j++) {
+            bytesArray[j] = _bytes32[j];
+        }
+        return string(bytesArray);
+    }
 
     /// @notice - Convert string to bytes32
-    // function stringToBytes32(string memory str) public pure returns (bytes32 result) {
-    //     require(bytes(str).length <= 32, "String too long");
-    //     assembly {
-    //         result := mload(add(str, 32))
-    //     }
-    // }
+    function stringToBytes32(string memory source) public pure returns (bytes32 result) {
+        bytes memory tempBytes = bytes(source);
+        if (tempBytes.length == 0) {
+            return 0x0;
+        }
 
-
-
+        assembly {
+            result := mload(add(source, 32))
+        }
+    }
 }
