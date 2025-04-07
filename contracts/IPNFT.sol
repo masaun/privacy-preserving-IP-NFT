@@ -6,6 +6,8 @@ import { ERC721 } from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import { ERC721URIStorage } from "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 
+import { DataTypeConverter } from "./libraries/DataTypeConverter.sol";
+
 import "forge-std/console.sol";
 
 
@@ -16,7 +18,6 @@ import "forge-std/console.sol";
 contract IPNFT is ERC721URIStorage, Ownable {
     IPNFTOwnershipVerifier public ipNFTOwnershipVerifier;
 
-    mapping(uint256 => bytes32) private metadataCidHashes; // Store a "metadata hash" into the "private" storage.
     mapping(uint256 => mapping(address => mapping(bytes32 => bool))) private nullifiers;        // Store a "nullifier" into the "private" storage.
 
     uint256 private nextTokenId = 1;
@@ -32,20 +33,30 @@ contract IPNFT is ERC721URIStorage, Ownable {
      * @dev - A given metadata URI includes a CID (IPFS Hash), where a proof is stored (instead of that its actual metadata is stored)
      * param metadataURI - The URI of the metadata associated with the NFT (i.e. IPFS Hash, which is called "CID")
      */
-    function mintIPNFT(string memory metadataCidHash, bytes calldata proof, bytes32 merkleRoot, bytes32 nullifierHash) public returns (uint256 tokenId) {
+    function mintIPNFT(bytes calldata proof, bytes32 merkleRoot, bytes32 nullifierHash, bytes32 metadataCidHash) public returns (uint256 tokenId) {
+        /// @dev - Convert the data type of a given metadataCidHash from bytes32 to string
+        string memory metadataCidHashString = DataTypeConverter.bytes32ToString(metadataCidHash); // Convert bytes32 to string
+        console.logString(metadataCidHashString);  // [Log]: 
+
+        /// @dev - Check before/after converting a given metadataCidHash.
+        bytes32 metadataCidHashReversed = DataTypeConverter.stringToBytes32(metadataCidHashString);
+        console.logBytes32(metadataCidHashReversed);  // [Log]: 0x0c863c512eaa011ffa5d0f8b8cfe26c5dfa6c0e102a4594a3e40af8f68d86dd0
+        console.logBytes32(metadataCidHash);          // [Log]: 0x0c863c512eaa011ffa5d0f8b8cfe26c5dfa6c0e102a4594a3e40af8f68d86dd0        
+        require(metadataCidHash == metadataCidHashReversed, "metadataCidHash and metadataCidHashReversed must be the same value");
+
         /// @dev - Mint a new IP-NFT
         uint256 tokenId = nextTokenId;
         _mint(msg.sender, tokenId);
-        _setTokenURI(tokenId, metadataCidHash);    /// @dev - Store a given metadataCidHash, which is a hashed-metadataURI, instead of storing a given metadataURI directly.
+        _setTokenURI(tokenId, metadataCidHashString);    /// @dev - Store a given metadataCidHash, which is a hashed-metadataURI, instead of storing a given metadataURI directly.
         //_setTokenURI(tokenId, metadataURI);   /// @dev - A given metadata URI includes a CID (IPFS Hash), where a proof is stored (instead of that its actual metadata is stored)
-        //metadataCidHashes[tokenId] = metadataCidHash; /// Store a "metadata hash (as a secret) into the "private" storage
 
         /// @dev - Verify the proof
-        bytes32[] memory publicInputs = new bytes32[](2);
+        bytes32[] memory publicInputs = new bytes32[](3);
         publicInputs[0] = merkleRoot;
         publicInputs[1] = nullifierHash;
+        publicInputs[2] = metadataCidHash; // [NOTE]: The tokenId is used as a public input to verify the proof.
         bool isValidProof = ipNFTOwnershipVerifier.verifyIPNFTOwnershipProof(proof, publicInputs);
-        require(isValidProof, "Invalid proof");      
+        require(isValidProof, "Invalid proof");
         //require(ipNFTOwnershipVerifier.verifyIPNFTOwnershipProof(proof, publicInputs), "Invalid proof");  
         console.logBool(isValidProof); // [Log]: true
 
