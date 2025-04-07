@@ -11,3 +11,13 @@ forge script script/edu-chain-testnet/deployment/DeploymentAllContracts.s.sol \
     ./contracts/IPNFTOwnershipVerifier.sol:IPNFTOwnershipVerifier \
     ./contracts/IPNFTFactory.sol:IPNFTFactory \
     --skip-simulation
+
+echo "Verify the deployed-smart contracts (icl. UltraVerifier, IPNFTOwnershipVerifier, IPNFTFactory) on EDU Chain Testnet Explorer..."
+forge script script/edu-chain-testnet/deployment/DeploymentAllContracts.s.sol \
+    --rpc-url ${EDU_CHAIN_TESTNET_RPC} \
+    --chain-id ${EDU_CHAIN_CHAIN_ID} \
+    --private-key ${EDU_CHAIN_TESTNET_PRIVATE_KEY} \
+    --resume \
+    --verify \
+    --verifier blockscout \
+    --verifier-url https://edu-chain-testnet.blockscout.com/api/
