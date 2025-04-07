@@ -5,6 +5,8 @@ import { IPNFTOwnershipVerifier } from "../contracts/circuit/IPNFTOwnershipVerif
 import { IPNFTFactory } from "../contracts/IPNFTFactory.sol";
 import { IPNFT } from "../contracts/IPNFT.sol";
 
+import { DataTypeConverter } from "../contracts/libraries/DataTypeConverter.sol";
+
 import "forge-std/console.sol";
 
 import { Test } from "forge-std/Test.sol";
@@ -54,9 +56,18 @@ contract IPNFTTest is Test {
         uint256 tokenId = ipNFT.mintIPNFT(proof, merkleRoot, nullifierHash, metadataCidHash); /// @dev - Store a given metadataCidHash, which is a hashed-metadataURI, instead of storing a given metadataURI directly.
         //uint256 tokenId = ipNFT.mintIPNFT(metadataURI, metadataCidHash, proof, merkleRoot, nullifierHash);
 
+        /// @dev - Convert the data type of a given metadataCidHash from bytes32 to string
+        string memory metadataCidHashString = DataTypeConverter.bytes32ToString(metadataCidHash); // Convert bytes32 to string
+        console.logString(metadataCidHashString);  // [Log]: 
+
         /// @dev - Get a tokenURI of the minted IP-NFT
-        // assertEq(metadataCidHash, ipNFT.tokenURI(tokenId));
-        // console.log(metadataCidHash); // [Log]: 0x1efa9d6bb4dfdf86063cc77efdec90eb9262079230f1898049efad264835b6c8
+        //assertEq(metadataCidHashString, ipNFT.tokenURI(tokenId));
+
+        /// @dev - Check before/after converting a given metadataCidHash.
+        bytes32 metadataCidHashReversed = DataTypeConverter.stringToBytes32(metadataCidHashString);
+        console.logBytes32(metadataCidHashReversed);  // [Log]: 0x0c863c512eaa011ffa5d0f8b8cfe26c5dfa6c0e102a4594a3e40af8f68d86dd0
+        console.logBytes32(metadataCidHash);          // [Log]: 0x0c863c512eaa011ffa5d0f8b8cfe26c5dfa6c0e102a4594a3e40af8f68d86dd0        
+        assertEq(metadataCidHash, metadataCidHashReversed); // @dev - metadataCidHash and metadataCidHashReversed must be the same value.
     }
 
     /**

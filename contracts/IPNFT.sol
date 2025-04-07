@@ -38,12 +38,13 @@ contract IPNFT is ERC721URIStorage, Ownable {
         string memory metadataCidHashString = DataTypeConverter.bytes32ToString(metadataCidHash); // Convert bytes32 to string
         console.logString(metadataCidHashString);  // [Log]: 
 
-        /// @dev - Check before/after converting a given metadataCidHash.
-        bytes32 metadataCidHashReversed = DataTypeConverter.stringToBytes32(metadataCidHashString);
-        console.logBytes32(metadataCidHashReversed);  // [Log]: 0x0c863c512eaa011ffa5d0f8b8cfe26c5dfa6c0e102a4594a3e40af8f68d86dd0
-        console.logBytes32(metadataCidHash);          // [Log]: 0x0c863c512eaa011ffa5d0f8b8cfe26c5dfa6c0e102a4594a3e40af8f68d86dd0        
-        require(metadataCidHash == metadataCidHashReversed, "metadataCidHash and metadataCidHashReversed must be the same value");
-
+        /// @dev - Check before/after converting a given metadataCidHash. 
+        /// @dev - [NOTE]: We could confirm this check was passed. Hence, the following validation code is commented out for the moment.
+        // bytes32 metadataCidHashReversed = DataTypeConverter.stringToBytes32(metadataCidHashString);
+        // require(metadataCidHash == metadataCidHashReversed, "metadataCidHash and metadataCidHashReversed must be the same value");
+        // console.logBytes32(metadataCidHash);          // [Log]: 0x0c863c512eaa011ffa5d0f8b8cfe26c5dfa6c0e102a4594a3e40af8f68d86dd0        
+        // console.logBytes32(metadataCidHashReversed);  // [Log]: 0x0c863c512eaa011ffa5d0f8b8cfe26c5dfa6c0e102a4594a3e40af8f68d86dd0
+        
         /// @dev - Mint a new IP-NFT
         uint256 tokenId = nextTokenId;
         _mint(msg.sender, tokenId);
