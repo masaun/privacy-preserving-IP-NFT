@@ -42,14 +42,19 @@ sh ./script/edu-chain-testnet/runningScript_Verify_onEDUChainTestnet.sh
 sh ./test/runningTest_IPNFTOwnershipVerifier.sh
 ```
 
-- Run the `IPNFTOwnershipVerifierOnEDUChainTestnet.t.sol` on the EDU Chain Testnet
+- Run the `IPNFTOwnershipVerifier_onEDUChainTestnet.t.sol` on the EDU Chain Testnet
 ```bash
-sh ./test/edu-chain-testnet/runningScript_Verify_onEDUChainTestnet.sh
+sh ./test/edu-chain-testnet/runningTest_IPNFTOwnershipVerifier_onEDUChainTestnet.sh
 ```
 
 - Run the `IPNFT.t.sol` on the Local Network
 ```bash
 sh ./test/runningTest_IPNFT.sh
+```
+
+- Run the `IPNFT_onEDUChainTestnet.t.sol` on the EDU Chain Testnet
+```bash
+sh ./test/edu-chain-testnet/runningTest_IPNFT_onEDUChainTestnet.sh
 ```
 
 <br>
