@@ -27,7 +27,35 @@ NOTE: A `IPNFT` contract is deployed via the IPNFTFactory#`createNewIPNFT()`.
 
 <br>
 
-## Installation
+## Installation - Noir and Foundry
+
+Install [noirup](https://noir-lang.org/docs/getting_started/noir_installation) with
+
+1. Install [noirup](https://noir-lang.org/docs/getting_started/noir_installation):
+
+   ```bash
+   curl -L https://raw.githubusercontent.com/noir-lang/noirup/main/install | bash
+   ```
+
+2. Install Nargo:
+
+   ```bash
+   noirup
+   ```
+
+3. Install foundryup and follow the instructions on screen. You should then have all the foundry
+   tools like `forge`, `cast`, `anvil` and `chisel`.
+
+```bash
+curl -L https://foundry.paradigm.xyz | bash
+```
+
+4. Install foundry dependencies by running `forge install 0xnonso/foundry-noir-helper --no-commit`.
+
+5. Install `bbup`, the tool for managing Barretenberg versions, by following the instructions
+   [here](https://github.com/AztecProtocol/aztec-packages/blob/master/barretenberg/bbup/README.md#installation).
+
+6. Then run `bbup`.
 
 <br>
 
@@ -110,50 +138,3 @@ sh script/utils/poseidon2-hash-generator/usages/async/runningScript_poseidon2Has
 - EDU Chain: 
   - Block Explorer: https://edu-chain-testnet.blockscout.com
   - Doc (icl. RPC, Fancet, etc): https://devdocs.opencampus.xyz/build/ 
-
-<br>
-
-<hr>
-
-# Noir with Foundry
-
-This example uses Foundry to deploy and test a verifier.
-
-## Getting Started
-
-Want to get started in a pinch? Start your project in a free Github Codespace!
-
-[![Start your project in a free Github Codespace!](https://github.com/codespaces/badge.svg)](https://codespaces.new/noir-lang/noir-starter)
-
-In the meantime, follow these simple steps to work on your own machine:
-
-Install [noirup](https://noir-lang.org/docs/getting_started/noir_installation) with
-
-1. Install [noirup](https://noir-lang.org/docs/getting_started/noir_installation):
-
-   ```bash
-   curl -L https://raw.githubusercontent.com/noir-lang/noirup/main/install | bash
-   ```
-
-2. Install Nargo:
-
-   ```bash
-   noirup
-   ```
-
-3. Install foundryup and follow the instructions on screen. You should then have all the foundry
-   tools like `forge`, `cast`, `anvil` and `chisel`.
-
-```bash
-curl -L https://foundry.paradigm.xyz | bash
-```
-
-4. Install foundry dependencies by running `forge install 0xnonso/foundry-noir-helper --no-commit`.
-
-5. Install `bbup`, the tool for managing Barretenberg versions, by following the instructions
-   [here](https://github.com/AztecProtocol/aztec-packages/blob/master/barretenberg/bbup/README.md#installation).
-
-6. Then run `bbup`.
-
-## Generate verifier contract and proof
-
