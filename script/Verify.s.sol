@@ -37,7 +37,9 @@ contract VerifyScript is Script {
         console.logBytes32(nftMetadataCidHash);  // [Log]: 0x0c863c512eaa011ffa5d0f8b8cfe26c5dfa6c0e102a4594a3e40af8f68d86dd0
 
         bytes memory proof_w_inputs = vm.readFileBinary("./circuits/target/ip_nft_ownership_proof.bin");
-        bytes memory proofBytes = ProofConverter.sliceAfter64Bytes(proof_w_inputs);
+        bytes memory proofBytes = ProofConverter.sliceAfter96Bytes(proof_w_inputs);    /// @dev - In case of that there are 3 public inputs (bytes32 * 3 = 96 bytes), the proof file includes 96 bytes of the public inputs at the beginning. Hence it should be removed by using this function.
+        //bytes memory proofBytes = ProofConverter.sliceAfter64Bytes(proof_w_inputs);  /// @dev - In case of that there are 2 public inputs (bytes32 * 2 = 64 bytes), the proof file includes 64 bytes of the public inputs at the beginning. Hence it should be removed by using this function.
+
         // string memory proof = vm.readLine("./circuits/target/ip_nft_ownership_proof.bin");
         // bytes memory proofBytes = vm.parseBytes(proof);
 
@@ -47,6 +49,8 @@ contract VerifyScript is Script {
         correctPublicInputs[2] = nftMetadataCidHash;
     
         bool isValidProof = ipNFTOwnershipVerifier.verifyIPNFTOwnershipProof(proofBytes, correctPublicInputs);
+        require(isValidProof == true, "isValidProof should be true");
+        console.logBool(isValidProof); // [Log]: true
         return isValidProof;
     }
 

@@ -29,10 +29,15 @@ sh circuit_test.sh
 sh ./script/runningScript_Verify.sh
 ```
 
-- Run the `Verify.s.sol` on the EDU Chain Testnet
+- Run the `Verify_onEDUChainTestnet.s.sol` on the EDU Chain Testnet
 ```bash
 sh ./script/edu-chain-testnet/runningScript_Verify_onEDUChainTestnet.sh
 ```
+
+- NOTE: The ProofConverter#`sliceAfter96Bytes()` would be used in the both script file above.
+  - The reason is that the number of public inputs is `3` (`bytes32 * 3 = 96 bytes`), meaning that the proof file includes `96 bytes` of the public inputs **at the beginning**. 
+     - Hence it should be removed by using the `sliceAfter96Bytes()` 
+
 
 <br>
 
