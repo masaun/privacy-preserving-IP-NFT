@@ -17,8 +17,8 @@ Or,
 
 ## Deployed-smart contracts on [`EDU Chain` Testnet](https://edu-chain-testnet.blockscout.com)
 
-| Contract Name | Descripttion | Deployed-contract addresses on EDU Chain (testnet) |
-| ------------- |:-------------:| -----:|
+| Contract Name | Descripttion | Deployed-contract addresses on EDU Chain (testnet) | Contract Source Code Verified |
+| ------------- |:------------:|:--------------------------------------------------:|:-----------------------------:|
 | UltraVerifier | The UltraPlonk Verifer contract (`./contracts/circuit/ultra-verifier/plonk_vk.sol`), which is generated based on ZK circuit in Noir (`./circuits/src/main.nr`). FYI: To generated this contract, the way of the [Noir's Solidity Verifier generation](https://noir-lang.org/docs/how_to/how-to-solidity-verifier) was used. | [0x4f615AA7d9315918569C2C36dc4658929700CF9E](https://edu-chain-testnet.blockscout.com/address/0x4f615AA7d9315918569C2C36dc4658929700CF9E) | [Contract Source Code Verified](https://edu-chain-testnet.blockscout.com/address/0x4f615AA7d9315918569C2C36dc4658929700CF9E?tab=contract) |
 | IPNFTOwnershipVerifier | The IPNFTOwnershipVerifier contract, which the validation using the UltraVerifier contract is implemented | [0x473c88d42212aafe64B363c4378BeA8DC5665Ec5](https://edu-chain-testnet.blockscout.com/address/0x473c88d42212aafe64B363c4378BeA8DC5665Ec5) | [Contract Source Code Verified](https://edu-chain-testnet.blockscout.com/address/0x473c88d42212aafe64B363c4378BeA8DC5665Ec5?tab=contract) |
 | IPNFTFactory | The IPNFTFactory contract, which create (deploy) a new `IPNFT` contract | [0x112e8b814d72A24eeae2e6A258c689d2FB0520E7](https://edu-chain-testnet.blockscout.com/address/0x112e8b814d72A24eeae2e6A258c689d2FB0520E7) | [Contract Source Code Verified](https://edu-chain-testnet.blockscout.com/address/0x112e8b814d72A24eeae2e6A258c689d2FB0520E7?tab=contract) |
