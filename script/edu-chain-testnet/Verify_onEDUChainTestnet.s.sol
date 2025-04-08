@@ -13,10 +13,10 @@ contract VerifyScript is Script {
     UltraVerifier public verifier;
 
     struct Poseidon2HashAndPublicInputs {
-        string hash;
+        string hash; // Poseidon Hash of "nullifier"
         bytes32 merkleRoot;
-        bytes32 nftMetadataCidHash;
         bytes32 nullifier;
+        bytes32 nftMetadataCidHash;
     }
 
     function setUp() public {}
@@ -85,11 +85,27 @@ contract VerifyScript is Script {
         string memory json = vm.readFile("script/utils/poseidon2-hash-generator/usages/async/output/output.json");
         console.log(json);
         bytes memory data = vm.parseJson(json);
-        Poseidon2HashAndPublicInputs memory poseidon2HashAndPublicInputs = abi.decode(data, (Poseidon2HashAndPublicInputs));
         //console.logBytes(data);
-        console.logString(poseidon2HashAndPublicInputs.hash);
-        console.logBytes32(poseidon2HashAndPublicInputs.merkleRoot);
-        console.logBytes32(poseidon2HashAndPublicInputs.nullifier);
+
+        string memory _hash = vm.parseJsonString(json, ".hash");
+        bytes32 _merkleRoot = vm.parseJsonBytes32(json, ".merkleRoot");
+        bytes32 _nullifier = vm.parseJsonBytes32(json, ".nullifier");
+        bytes32 _nftMetadataCidHash = vm.parseJsonBytes32(json, ".nftMetadataCidHash");
+        console.logString(_hash);
+        console.logBytes32(_merkleRoot);
+        console.logBytes32(_nullifier);
+        console.logBytes32(_nftMetadataCidHash);
+
+        Poseidon2HashAndPublicInputs memory poseidon2HashAndPublicInputs = Poseidon2HashAndPublicInputs({
+            hash: _hash,
+            merkleRoot: _merkleRoot,
+            nullifier: _nullifier,
+            nftMetadataCidHash: _nftMetadataCidHash
+        });
+        // console.logString(poseidon2HashAndPublicInputs.hash);
+        // console.logBytes32(poseidon2HashAndPublicInputs.merkleRoot);
+        // console.logBytes32(poseidon2HashAndPublicInputs.nullifier);
+        // console.logBytes32(poseidon2HashAndPublicInputs.nftMetadataCidHash);
 
         return poseidon2HashAndPublicInputs;
     }

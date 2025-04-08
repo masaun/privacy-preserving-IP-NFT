@@ -15,10 +15,10 @@ contract VerifyScript is Script {
     UltraVerifier public verifier;
 
     struct Poseidon2HashAndPublicInputs {
-        string hash;
+        string hash; // Poseidon Hash of "nullifier"
         bytes32 merkleRoot;
-        bytes32 nftMetadataCidHash;
         bytes32 nullifier;
+        bytes32 nftMetadataCidHash;
     }
 
     function setUp() public {}
@@ -29,9 +29,9 @@ contract VerifyScript is Script {
 
         // @dev - Retrieve the Poseidon2 hash and public inputs, which was read from the output.json file
         Poseidon2HashAndPublicInputs memory poseidon2HashAndPublicInputs = computePoseidon2Hash();
-        bytes32 merkleRoot = poseidon2HashAndPublicInputs.merkleRoot;   // [Log]: 0x215597bacd9c7e977dfc170f320074155de974be494579d2586e5b268fa3b629
-        bytes32 nullifierHash = poseidon2HashAndPublicInputs.nullifier; // [Log]: 0x168758332d5b3e2d13be8048c8011b454590e06c44bce7f702f09103eef5a373
-        bytes32 nftMetadataCidHash = poseidon2HashAndPublicInputs.nftMetadataCidHash; // [Log]:
+        bytes32 merkleRoot = poseidon2HashAndPublicInputs.merkleRoot;
+        bytes32 nullifierHash = poseidon2HashAndPublicInputs.nullifier;
+        bytes32 nftMetadataCidHash = poseidon2HashAndPublicInputs.nftMetadataCidHash;
         console.logBytes32(merkleRoot);          // [Log]: 0x215597bacd9c7e977dfc170f320074155de974be494579d2586e5b268fa3b629
         console.logBytes32(nullifierHash);       // [Log]: 0x26df0d347e961cb94e1cc6d2ad8558696de8c1964b30e26f2ec8b926cbbbf862
         console.logBytes32(nftMetadataCidHash);  // [Log]: 0x0c863c512eaa011ffa5d0f8b8cfe26c5dfa6c0e102a4594a3e40af8f68d86dd0
@@ -45,7 +45,7 @@ contract VerifyScript is Script {
         correctPublicInputs[0] = merkleRoot;
         correctPublicInputs[1] = nullifierHash;
         correctPublicInputs[2] = nftMetadataCidHash;
-
+    
         bool isValidProof = ipNFTOwnershipVerifier.verifyIPNFTOwnershipProof(proofBytes, correctPublicInputs);
         return isValidProof;
     }
@@ -74,12 +74,27 @@ contract VerifyScript is Script {
         string memory json = vm.readFile("script/utils/poseidon2-hash-generator/usages/async/output/output.json");
         console.log(json);
         bytes memory data = vm.parseJson(json);
-        Poseidon2HashAndPublicInputs memory poseidon2HashAndPublicInputs = abi.decode(data, (Poseidon2HashAndPublicInputs));
         //console.logBytes(data);
-        console.logString(poseidon2HashAndPublicInputs.hash);
-        console.logBytes32(poseidon2HashAndPublicInputs.merkleRoot);
-        console.logBytes32(poseidon2HashAndPublicInputs.nullifier);
-        console.logBytes32(poseidon2HashAndPublicInputs.nftMetadataCidHash);
+
+        string memory _hash = vm.parseJsonString(json, ".hash");
+        bytes32 _merkleRoot = vm.parseJsonBytes32(json, ".merkleRoot");
+        bytes32 _nullifier = vm.parseJsonBytes32(json, ".nullifier");
+        bytes32 _nftMetadataCidHash = vm.parseJsonBytes32(json, ".nftMetadataCidHash");
+        console.logString(_hash);
+        console.logBytes32(_merkleRoot);
+        console.logBytes32(_nullifier);
+        console.logBytes32(_nftMetadataCidHash);
+
+        Poseidon2HashAndPublicInputs memory poseidon2HashAndPublicInputs = Poseidon2HashAndPublicInputs({
+            hash: _hash,
+            merkleRoot: _merkleRoot,
+            nullifier: _nullifier,
+            nftMetadataCidHash: _nftMetadataCidHash
+        });
+        // console.logString(poseidon2HashAndPublicInputs.hash);
+        // console.logBytes32(poseidon2HashAndPublicInputs.merkleRoot);
+        // console.logBytes32(poseidon2HashAndPublicInputs.nullifier);
+        // console.logBytes32(poseidon2HashAndPublicInputs.nftMetadataCidHash);
 
         return poseidon2HashAndPublicInputs;
     }
