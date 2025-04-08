@@ -29,7 +29,7 @@ sh circuit_test.sh
 sh ./script/runningScript_Verify.sh
 ```
 
-- Run the `Verify.s.sol` on the EDU Chain Testnet
+- Run the `Verify_onEDUChainTestnet.s.sol` on the EDU Chain Testnet
 ```bash
 sh ./script/edu-chain-testnet/runningScript_Verify_onEDUChainTestnet.sh
 ```
