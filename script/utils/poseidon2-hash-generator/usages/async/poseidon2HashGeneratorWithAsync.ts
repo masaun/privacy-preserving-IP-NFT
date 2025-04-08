@@ -76,7 +76,7 @@ async function main(): Promise<bigint> { // Mark the function as async
   const result = {
     hash: String(hash),
     nullifier: String(nullifier),
-    nft_metadata_cid_hash: String(nft_metadata_cid_hash),
+    nftMetadataCidHash: String(nft_metadata_cid_hash),
     merkleRoot: String(merkleRoot),
     //message: "Poseidon2 hash-generated is successfully exported",
   };

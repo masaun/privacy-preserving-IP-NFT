@@ -52,6 +52,14 @@ sh ./test/edu-chain-testnet/runningScript_Verify_onEDUChainTestnet.sh
 sh ./test/runningTest_IPNFT.sh
 ```
 
+<br>
+
+## Deployment
+- Run the `DeploymentAllContracts.s.sol`
+```bash
+sh ./script/edu-chain-testnet/deployment/deploymentScript_AllContracts.sh
+```
+
 
 <br>
 
