@@ -1,17 +1,17 @@
-# Climate Change ZK Certificate (i.e. GHG certificate) /or IP-NFT /w ZK certificate-attached metadata in Noir
+# ZK (Zero-Knowledge) powered privacy preserving IP-NFT
 
 ## Tech Stack
+
+- `ZK circuit`: Written in [`Noir`](https://noir-lang.org/docs/) powered by [Aztec](https://aztec.network/)) 
+- Smart Contract: Written in Solidity (Framework: Foundry)
+- Blockchain: [`EDU Chain`](https://edu-chain-testnet.blockscout.com) (Testnet)
 
 
 <br>
 
 ## Overview
 
-- Climate Change ZK Certificate (i.e. GHG certificate)
-  
-Or,
-
-- IP-NFT /w ZK certificate-attached metadata
+This is the ZK (Zero-Knowledge) powered privacy preserving IP-NFT, which enable an IP owner to attach its metadata without revealing a sensitive data.
 
 <br>
 
