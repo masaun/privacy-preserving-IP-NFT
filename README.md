@@ -48,6 +48,7 @@ If a third party actor would like to check wether or not an owner is a valid IP 
 
 ## Diagram of Userflow
 - The diagram of userflow: 
+  ![Image](https://github.com/user-attachments/assets/662b28e1-a377-4e1a-b056-7165c47257c3)
 
 
 
