@@ -11,7 +11,46 @@
 
 ## Overview
 
-This is the ZK (Zero-Knowledge) powered privacy preserving IP-NFT, which enable an IP owner to attach its metadata without revealing a sensitive data.
+IP-NFT is often used in DeSci space.
+
+When a IP owner would create their IP-NFT contract, the IP owner basically associated with their IP's metadata URI (i.e. IPFS `CID`) via the ERC721#`_setTokenUR()`.
+(In a case that an IPFS `CID` is used as a IP's metadata URI, anyone can know it by calling the ERC721#`tokenURI()` and retrieve it (IPFS `CID`) and see it - because it's "public")
+
+However, within the IP's metadata URI (i.e. IPFS `CID`), some sensitive information that the IP owner does not want to disclose in public may be included.
+
+For resolving this problem, the ZK (Zero-Knowledge) powered privacy preserving IP-NFT contract can be used.
+This ZK-powered privacy preserving IP-NFT contract would enable an IP owner to attach its metadata without revealing a sensitive data thanks to using a ZKP (Zero-Knowledge Proof), which is generated via ZK circuit in Noir (`./circuits/src/main.nr`).
+
+When a ZKP is generated via ZK circuit, a `Poseidon Hashed-IPFS CID` will be generated as a `public input`. Instead of associating a a public metadata URI (i.e. IPFS `CID`), the IP owner can associated the `Poseidon Hashed-IPFS CID` with their IP-NFT.
+
+If a third party actor would like to check wether or not an owner is a valid IP owner and a metadada, which is asscoiated with a IP-NFT, is a valid metadata, the IP owner can show their ownership and valid metadata by calling the IPNFTOwnershipVerifier#`verifyIPNFTOwnershipProof()` with ZKP and public inputs (`Poseidon Hashed-IPFS CID`, etc) without disclosing a sensitive data-included in the IPFS `CID`.
+
+(NOTE: The `IPNFTOwnershipVerifier` contract, which is the on-chain verifier contract for the ZK circuit (`./circuits/src/main.nr`))
+
+<br>
+
+## Userflow
+
+- 1/ A IP owner would generate a new ZKP (Zero-Knowledge Proof) and public input data (`Poseidon Hashed-IPFS CID`, etc) through calling ZK circuit /w IPFS `CID`, etc.
+  (NOTE: At this point, `Nullifier` and `Merkle Root` will also generated as `public inputs`).
+  (NOTE: This step 1/ is an "off-chain" process)
+
+- 2/ The IP owner would create/deploy a new IP-NFT contract via the IPNFTFactory#`createNewIPNFT()`.
+
+- 3/ The IP owner would mint a new tokenID of IP-NFT /w the ZKP and public inputs, which was generated when the step 1/ through calling the IPNFT#`mintIPNFT()` /w the ZKP and public inputs.
+  - At this point, a given `Poseidon Hashed-IPFS CID`, which is one of public inputs, will internally be associated with the tokenID of IP-NFT to be minted.
+
+- 4/ If a third party actor would like to check wether or not an owner is a valid IP owner and a metadada, which is asscoiated with a IP-NFT, is a valid metadata, the IP owner can show their ownership and valid metadata by calling the IPNFTOwnershipVerifier#`verifyIPNFTOwnershipProof()` with ZKP and public inputs (`Poseidon Hashed-IPFS CID`, etc) without disclosing a sensitive data-included in the IPFS `CID`.
+
+
+<br>
+
+
+## Diagram of Userflow
+- The diagram of userflow: 
+
+
+
 
 <br>
 
@@ -125,7 +164,16 @@ sh ./script/edu-chain-testnet/deployment/deploymentScript_AllContracts.sh
 ```bash
 sh script/utils/poseidon2-hash-generator/usages/async/runningScript_poseidon2HashGeneratorWithAsync.sh
 ```
-(Ref: https://nodejs.org/en/learn/typescript/run#running-typescript-with-a-runner )
+↓
+- By running the script above, an `output.json` file like below would be exported and saved to the `script/utils/poseidon2-hash-generator/usages/async/output` directory:
+```json
+{
+  "hash": "17581986279560538761428021143884026167649881764772625124550680138044361406562",
+  "nullifier": "0x26df0d347e961cb94e1cc6d2ad8558696de8c1964b30e26f2ec8b926cbbbf862",
+  "nftMetadataCidHash": "0x0c863c512eaa011ffa5d0f8b8cfe26c5dfa6c0e102a4594a3e40af8f68d86dd0",
+  "merkleRoot": "0x215597bacd9c7e977dfc170f320074155de974be494579d2586e5b268fa3b629"
+}
+```
 
 <br>
 
@@ -138,3 +186,6 @@ sh script/utils/poseidon2-hash-generator/usages/async/runningScript_poseidon2Has
 - EDU Chain: 
   - Block Explorer: https://edu-chain-testnet.blockscout.com
   - Doc (icl. RPC, Fancet, etc): https://devdocs.opencampus.xyz/build/ 
+
+- Node.js:  
+  - How to run a Typescript (Node.js) file in shell script: https://nodejs.org/en/learn/typescript/run#running-typescript-with-a-runner
