@@ -1,16 +1,101 @@
-# Climate Change ZK Certificate (i.e. GHG certificate) /or IP-NFT /w ZK certificate-attached metadata in Noir
+# ZK (Zero-Knowledge) powered privacy preserving IP-NFT
 
-## Overview
+## Tech Stack
 
-- Climate Change ZK Certificate (i.e. GHG certificate)
-  
-Or,
+- `ZK circuit`: Written in [`Noir`](https://noir-lang.org/docs/) powered by [Aztec](https://aztec.network/)) 
+- Smart Contract: Written in Solidity (Framework: Foundry)
+- Blockchain: [`EDU Chain`](https://edu-chain-testnet.blockscout.com) (Testnet)
 
-- IP-NFT /w ZK certificate-attached metadata
 
 <br>
 
-## Installation
+## Overview
+
+IP-NFT is often used in DeSci space.
+
+When a IP owner would create their IP-NFT contract, the IP owner basically associated with their IP's metadata URI (i.e. IPFS `CID`) via the ERC721#`_setTokenUR()`.
+(In a case that an IPFS `CID` is used as a IP's metadata URI, anyone can know it by calling the ERC721#`tokenURI()` and retrieve it (IPFS `CID`) and see it - because it's "public")
+
+However, within the IP's metadata URI (i.e. IPFS `CID`), some sensitive information that the IP owner does not want to disclose in public may be included.
+
+For resolving this problem, the ZK (Zero-Knowledge) powered privacy preserving IP-NFT contract can be used.
+This ZK-powered privacy preserving IP-NFT contract would enable an IP owner to attach its metadata without revealing a sensitive data thanks to using a ZKP (Zero-Knowledge Proof), which is generated via ZK circuit in Noir (`./circuits/src/main.nr`).
+
+When a ZKP is generated via ZK circuit, a `Poseidon Hashed-IPFS CID` will be generated as a `public input`. Instead of associating a a public metadata URI (i.e. IPFS `CID`), the IP owner can associated the `Poseidon Hashed-IPFS CID` with their IP-NFT.
+
+If a third party actor would like to check wether or not an owner is a valid IP owner and a metadada, which is asscoiated with a IP-NFT, is a valid metadata, the IP owner can show their ownership and valid metadata by calling the IPNFTOwnershipVerifier#`verifyIPNFTOwnershipProof()` with ZKP and public inputs (`Poseidon Hashed-IPFS CID`, etc) without disclosing a sensitive data-included in the IPFS `CID`.
+
+(NOTE: The `IPNFTOwnershipVerifier` contract, which is the on-chain verifier contract for the ZK circuit (`./circuits/src/main.nr`))
+
+<br>
+
+## Userflow
+
+- 1/ A IP owner would generate a new ZKP (Zero-Knowledge Proof) and public input data (`Poseidon Hashed-IPFS CID`, etc) through calling ZK circuit /w IPFS `CID`, etc.
+  (NOTE: At this point, `Nullifier` and `Merkle Root` will also generated as `public inputs`).
+  (NOTE: This step 1/ is an "off-chain" process)
+
+- 2/ The IP owner would create/deploy a new IP-NFT contract via the IPNFTFactory#`createNewIPNFT()`.
+
+- 3/ The IP owner would mint a new tokenID of IP-NFT /w the ZKP and public inputs, which was generated when the step 1/ through calling the IPNFT#`mintIPNFT()` /w the ZKP and public inputs.
+  - At this point, a given `Poseidon Hashed-IPFS CID`, which is one of public inputs, will internally be associated with the tokenID of IP-NFT to be minted.
+
+- 4/ If a third party actor would like to check wether or not an owner is a valid IP owner and a metadada, which is asscoiated with a IP-NFT, is a valid metadata, the IP owner can show their ownership and valid metadata by calling the IPNFTOwnershipVerifier#`verifyIPNFTOwnershipProof()` with ZKP and public inputs (`Poseidon Hashed-IPFS CID`, etc) without disclosing a sensitive data-included in the IPFS `CID`.
+
+
+<br>
+
+
+## Diagram of Userflow
+- The diagram of userflow ([Link](https://github.com/masaun/privacy-preserving-IP-NFT/blob/develop/docs/diagrams/diagram_privacy-preserving-IP-NFT.jpg)):  
+  ![Image](https://github.com/user-attachments/assets/662b28e1-a377-4e1a-b056-7165c47257c3)
+
+
+
+
+<br>
+
+## Deployed-smart contracts on [`EDU Chain` Testnet](https://edu-chain-testnet.blockscout.com)
+
+| Contract Name | Descripttion | Deployed-contract addresses on EDU Chain (testnet) | Contract Source Code Verified |
+| ------------- |:------------:|:--------------------------------------------------:|:-----------------------------:|
+| UltraVerifier | The UltraPlonk Verifer contract (`./contracts/circuit/ultra-verifier/plonk_vk.sol`), which is generated based on ZK circuit in Noir (`./circuits/src/main.nr`). FYI: To generated this contract, the way of the [Noir's Solidity Verifier generation](https://noir-lang.org/docs/how_to/how-to-solidity-verifier) was used. | [0x4f615AA7d9315918569C2C36dc4658929700CF9E](https://edu-chain-testnet.blockscout.com/address/0x4f615AA7d9315918569C2C36dc4658929700CF9E) | [Contract Source Code Verified](https://edu-chain-testnet.blockscout.com/address/0x4f615AA7d9315918569C2C36dc4658929700CF9E?tab=contract) |
+| IPNFTOwnershipVerifier | The IPNFTOwnershipVerifier contract, which the validation using the UltraVerifier contract is implemented | [0x473c88d42212aafe64B363c4378BeA8DC5665Ec5](https://edu-chain-testnet.blockscout.com/address/0x473c88d42212aafe64B363c4378BeA8DC5665Ec5) | [Contract Source Code Verified](https://edu-chain-testnet.blockscout.com/address/0x473c88d42212aafe64B363c4378BeA8DC5665Ec5?tab=contract) |
+| IPNFTFactory | The IPNFTFactory contract, which create (deploy) a new `IPNFT` contract | [0x112e8b814d72A24eeae2e6A258c689d2FB0520E7](https://edu-chain-testnet.blockscout.com/address/0x112e8b814d72A24eeae2e6A258c689d2FB0520E7) | [Contract Source Code Verified](https://edu-chain-testnet.blockscout.com/address/0x112e8b814d72A24eeae2e6A258c689d2FB0520E7?tab=contract) |
+
+NOTE: A `IPNFT` contract is deployed via the IPNFTFactory#`createNewIPNFT()`.
+
+<br>
+
+## Installation - Noir and Foundry
+
+Install [noirup](https://noir-lang.org/docs/getting_started/noir_installation) with
+
+1. Install [noirup](https://noir-lang.org/docs/getting_started/noir_installation):
+
+   ```bash
+   curl -L https://raw.githubusercontent.com/noir-lang/noirup/main/install | bash
+   ```
+
+2. Install Nargo:
+
+   ```bash
+   noirup
+   ```
+
+3. Install foundryup and follow the instructions on screen. You should then have all the foundry
+   tools like `forge`, `cast`, `anvil` and `chisel`.
+
+```bash
+curl -L https://foundry.paradigm.xyz | bash
+```
+
+4. Install foundry dependencies by running `forge install 0xnonso/foundry-noir-helper --no-commit`.
+
+5. Install `bbup`, the tool for managing Barretenberg versions, by following the instructions
+   [here](https://github.com/AztecProtocol/aztec-packages/blob/master/barretenberg/bbup/README.md#installation).
+
+6. Then run `bbup`.
 
 <br>
 
@@ -80,154 +165,33 @@ sh ./script/edu-chain-testnet/deployment/deploymentScript_AllContracts.sh
 ```bash
 sh script/utils/poseidon2-hash-generator/usages/async/runningScript_poseidon2HashGeneratorWithAsync.sh
 ```
-(Ref: https://nodejs.org/en/learn/typescript/run#running-typescript-with-a-runner )
-
+↓
+- By running the script above, an `output.json` file like below would be exported and saved to the `script/utils/poseidon2-hash-generator/usages/async/output` directory:
+```json
+{
+  "hash": "17581986279560538761428021143884026167649881764772625124550680138044361406562",
+  "nullifier": "0x26df0d347e961cb94e1cc6d2ad8558696de8c1964b30e26f2ec8b926cbbbf862",
+  "nftMetadataCidHash": "0x0c863c512eaa011ffa5d0f8b8cfe26c5dfa6c0e102a4594a3e40af8f68d86dd0",
+  "merkleRoot": "0x215597bacd9c7e977dfc170f320074155de974be494579d2586e5b268fa3b629"
+}
+```
+(NOTE: To generate a **Poseidon Hash** (`hash`), the [`@zkpassport/poseidon2`](https://github.com/zkpassport/poseidon2/tree/main) library would be used)
 
 <br>
 
-<hr>
+## References and Resources
 
-# Noir with Foundry
+- Noir:
+  - Doc: https://noir-lang.org/docs/getting_started/quick_start
 
-This example uses Foundry to deploy and test a verifier.
+- `@zkpassport/poseidon2` library:  
+  - Repo: https://github.com/zkpassport/poseidon2/tree/main
 
-## Getting Started
 
-Want to get started in a pinch? Start your project in a free Github Codespace!
 
-[![Start your project in a free Github Codespace!](https://github.com/codespaces/badge.svg)](https://codespaces.new/noir-lang/noir-starter)
+- EDU Chain: 
+  - Block Explorer: https://edu-chain-testnet.blockscout.com
+  - Doc (icl. RPC, Fancet, etc): https://devdocs.opencampus.xyz/build/ 
 
-In the meantime, follow these simple steps to work on your own machine:
-
-Install [noirup](https://noir-lang.org/docs/getting_started/noir_installation) with
-
-1. Install [noirup](https://noir-lang.org/docs/getting_started/noir_installation):
-
-   ```bash
-   curl -L https://raw.githubusercontent.com/noir-lang/noirup/main/install | bash
-   ```
-
-2. Install Nargo:
-
-   ```bash
-   noirup
-   ```
-
-3. Install foundryup and follow the instructions on screen. You should then have all the foundry
-   tools like `forge`, `cast`, `anvil` and `chisel`.
-
-```bash
-curl -L https://foundry.paradigm.xyz | bash
-```
-
-4. Install foundry dependencies by running `forge install 0xnonso/foundry-noir-helper --no-commit`.
-
-5. Install `bbup`, the tool for managing Barretenberg versions, by following the instructions
-   [here](https://github.com/AztecProtocol/aztec-packages/blob/master/barretenberg/bbup/README.md#installation).
-
-6. Then run `bbup`.
-
-## Generate verifier contract and proof
-
-### Contract
-
-The deployment assumes a verifier contract has been generated by nargo. In order to do this, run:
-
-```bash
-cd circuits
-nargo compile
-bb write_vk -b ./target/with_foundry.json
-bb contract
-```
-
-A file named `contract.sol` should appear in the `circuits/target` folder.
-
-### Test with Foundry
-
-We're ready to test with Foundry. There's a basic test inside the `test` folder that deploys the
-verifier contract, the `Starter` contract and two bytes32 arrays correspondent to good and bad
-solutions to your circuit.
-
-By running the following command, forge will compile the contract with 5000 rounds of optimization
-and the London EVM version. **You need to use these optimizer settings to suppress the "stack too
-deep" error on the solc compiler**. Then it will run the test, expecting it to pass with correct
-inputs, and fail with wrong inputs:
-
-```bash
-forge test --optimize --optimizer-runs 5000 --evm-version cancun
-```
-
-#### Testing On-chain
-
-You can test that the Noir Solidity verifier contract works on a given chain by running the
-`Verify.s.sol` script against the appropriate RPC endpoint.
-
-```bash
-forge script script/Verify.s.sol --rpc-url $RPC_ENDPOINT  --broadcast
-```
-
-If that doesn't work, you can add the network to Metamask and deploy and test via
-[Remix](https://remix.ethereum.org/).
-
-Note that some EVM network infrastructure may behave differently and this script may fail for
-reasons unrelated to the compatibility of the verifier contract.
-
-### Deploy with Foundry
-
-This template also has a script to help you deploy on your own network. But for that you need to run
-your own node or, alternatively, deploy on a testnet.
-
-#### (Option 1) Run a local node
-
-If you want to deploy locally, run a node by opening a terminal and running
-
-```bash
-anvil
-```
-
-This should start a local node listening on `http://localhost:8545`. It will also give you many
-private keys.
-
-Edit your `.env` file to look like:
-
-```
-ANVIL_RPC=http://localhost:8545
-LOCALHOST_PRIVATE_KEY=<the private key you just got from anvil>
-```
-
-#### (Option 2) Prepare for testnet
-
-Pick a testnet like Sepolia or Goerli. Generate a private key and use a faucet (like
-[this one for Sepolia](https://sepoliafaucet.com/)) to get some coins in there.
-
-Edit your `.env` file to look like:
-
-```env
-SEPOLIA_RPC=https://rpc2.sepolia.org
-LOCALHOST_PRIVATE_KEY=<the private key of the account with your coins>
-```
-
-#### Run the deploy script
-
-You need to source your `.env` file before deploying. Do that with:
-
-```bash
-source .env
-```
-
-Then run the deployment with:
-
-```bash
-forge script script/Starter.s.sol --rpc-url $ANVIL_RPC --broadcast --verify
-```
-
-Replace `$ANVIL_RPC` with the testnet RPC, if you're deploying on a testnet.
-
-## Developing on this template
-
-This template doesn't include settings you may need to deal with syntax highlighting and
-IDE-specific settings (i.e. VScode). Please follow the instructions on the
-[Foundry book](https://book.getfoundry.sh/config/vscode) to set that up.
-
-It's **highly recommended** you get familiar with [Foundry](https://book.getfoundry.sh) before
-developing on this template.
+- Node.js:  
+  - How to run a Typescript (Node.js) file in shell script: https://nodejs.org/en/learn/typescript/run#running-typescript-with-a-runner
