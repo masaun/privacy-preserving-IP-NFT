@@ -11,7 +11,8 @@
 
 ## Overview
 
-IP-NFT is often used in DeSci space.
+[`IP-NFT` (Intellectual Property Non-Fungible Token)](https://docs.molecule.to/documentation/ip-nfts/intro-to-ip-nft) provide a secure and immutable proof of ownership for intellectual property on-chain and it is used for a scentific research in DeSci space.
+(More details about the concept of IP-NFT is written in the [Molecule's document](https://docs.molecule.to/documentation/ip-nfts/intro-to-ip-nft))
 
 When a IP owner would create their IP-NFT contract, the IP owner basically associated with their IP's metadata URI (i.e. IPFS `CID`) via the ERC721#`_setTokenUR()`.
 (In a case that an IPFS `CID` is used as a IP's metadata URI, anyone can know it by calling the ERC721#`tokenURI()` and retrieve it (IPFS `CID`) and see it - because it's "public")
@@ -188,10 +189,13 @@ sh script/utils/poseidon2-hash-generator/usages/async/runningScript_poseidon2Has
   - Repo: https://github.com/zkpassport/poseidon2/tree/main
 
 
-
 - EDU Chain: 
   - Block Explorer: https://edu-chain-testnet.blockscout.com
   - Doc (icl. RPC, Fancet, etc): https://devdocs.opencampus.xyz/build/ 
 
 - Node.js:  
   - How to run a Typescript (Node.js) file in shell script: https://nodejs.org/en/learn/typescript/run#running-typescript-with-a-runner
+
+
+- IP-NFT:  
+  - Intro to IP-NFT: https://docs.molecule.to/documentation/ip-nfts/intro-to-ip-nft
