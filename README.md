@@ -175,7 +175,7 @@ sh script/utils/poseidon2-hash-generator/usages/async/runningScript_poseidon2Has
   "merkleRoot": "0x215597bacd9c7e977dfc170f320074155de974be494579d2586e5b268fa3b629"
 }
 ```
-(NOTE: To generate a Poseidon Hash, the [`@zkpassport/poseidon2`](https://github.com/zkpassport/poseidon2/tree/main) library would be used)
+(NOTE: To generate a **Poseidon Hash** (`hash`), the [`@zkpassport/poseidon2`](https://github.com/zkpassport/poseidon2/tree/main) library would be used)
 
 <br>
 
