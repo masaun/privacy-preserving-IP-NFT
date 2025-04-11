@@ -109,7 +109,15 @@ sh circuit_test.sh
 
 <br>
 
-## SC - Script
+## Smart Contract - Compile
+- Compile the smart contracts:
+```bash
+sh buildContract.sh
+```
+
+<br>
+
+## Smart Contract - Script
 - Run the `Verify.s.sol` on the Local Network
 ```bash
 sh ./script/runningScript_Verify.sh
@@ -127,7 +135,7 @@ sh ./script/edu-chain-testnet/runningScript_Verify_onEDUChainTestnet.sh
 
 <br>
 
-## SC - Test
+## Smart Contract - Test
 - Run the `IPNFTOwnershipVerifier.t.sol` on the Local Network
 ```bash
 sh ./test/runningTest_IPNFTOwnershipVerifier.sh
