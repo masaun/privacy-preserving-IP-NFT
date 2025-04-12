@@ -98,6 +98,7 @@ curl -L https://foundry.paradigm.xyz | bash
 
 6. Then run `bbup`.
 
+
 <br>
 
 ## ZK circuit - Test
@@ -118,6 +119,12 @@ sh buildContract.sh
 <br>
 
 ## Smart Contract - Script
+- Install `npm` modules - if it's first time to run this script. (From the second time, this installation step can be skipped):
+```bash
+cd script/utils/poseidon2-hash-generator
+npm i
+```
+
 - Run the `Verify.s.sol` on the Local Network
 ```bash
 sh ./script/runningScript_Verify.sh
