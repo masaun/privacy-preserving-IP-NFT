@@ -51,8 +51,11 @@ If a third party actor would like to check wether or not an owner is a valid IP 
 - The diagram of userflow ([Link](https://github.com/masaun/privacy-preserving-IP-NFT/blob/develop/docs/diagrams/diagram_privacy-preserving-IP-NFT.jpg)):  
   ![Image](https://github.com/user-attachments/assets/662b28e1-a377-4e1a-b056-7165c47257c3)
 
+<br>
 
+## DEMO Video
 
+- The DEMO Video link is here: https://www.youtube.com/watch?v=W1GD3DfiUpQ
 
 <br>
 
