@@ -103,9 +103,20 @@ curl -L https://foundry.paradigm.xyz | bash
 
 ## ZK circuit - Test
 
+- Run the `./circuits/src/tests/mod.nr` via the `./circuits/circuit_test.sh`:
 ```bash
 cd circuits
 sh circuit_test.sh
+```
+
+<br>
+
+## ZK circuit - Generate a ZKP (Zero-Knowledge Proof)
+
+- Run the `./circuits/src/main.nr` via the `./circuits/build.sh` to generate a ZKP (Zero-Knowledge Proof), which is called a `ip_nft_ownership` proof:
+```bash
+cd circuits
+sh build.sh
 ```
 
 <br>
