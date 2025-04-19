@@ -113,6 +113,11 @@ sh circuit_test.sh
 
 ## ZK circuit - Generate a ZKP (Zero-Knowledge Proof)
 
+- Create the `Prover.toml` by copying the `Prover.example.toml`. Then, appropreate values should be stored into there.
+```bash
+cp Prover.example.toml Prover.toml
+```
+
 - Run the `./circuits/src/main.nr` via the `./circuits/build.sh` to generate a ZKP (Zero-Knowledge Proof), which is called a `ip_nft_ownership` proof:
 ```bash
 cd circuits
