@@ -103,7 +103,7 @@ curl -L https://foundry.paradigm.xyz | bash
 
 ## ZK circuit - Test
 
-- Run the `./circuits/src/tests/mod.nr` via the `./circuits/circuit_test.sh`:
+- Run the test of the ZK circuit (`./circuits/src/tests/mod.nr`) via the `./circuits/circuit_test.sh`:
 ```bash
 cd circuits
 sh circuit_test.sh
@@ -115,10 +115,11 @@ sh circuit_test.sh
 
 - Create the `Prover.toml` by copying the `Prover.example.toml`. Then, appropreate values should be stored into there.
 ```bash
+cd circuits
 cp Prover.example.toml Prover.toml
 ```
 
-- Run the `./circuits/src/main.nr` via the `./circuits/build.sh` to generate a ZKP (Zero-Knowledge Proof), which is called a `ip_nft_ownership` proof:
+- Run the ZK circuit (`./circuits/src/main.nr`) via the `./circuits/build.sh` to generate a ZKP (Zero-Knowledge Proof), which is called a `ip_nft_ownership` proof:
 ```bash
 cd circuits
 sh build.sh
